@@ -114,6 +114,7 @@ export interface SiteConfig {
 }
 
 export interface Ippdata {
+    timeset: number
     timestamps: number
     id: number
     time?: string

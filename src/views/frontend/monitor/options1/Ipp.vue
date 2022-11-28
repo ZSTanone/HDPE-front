@@ -2,37 +2,37 @@
  * @Author: zwj
  * @Date: 2022-11-14 16:00:30
  * @LastEditors: zwj
- * @LastEditTime: 2022-11-25 20:16:28
+ * @LastEditTime: 2022-11-27 11:27:01
  * @Description: 
 -->
 <template>
     <div class="IPPbox">
-        <el-button size="small" type="success" class="FIC141" @click="dialogVisible = true;">{{ FIC141 }}</el-button>
-        <el-button size="small" type="success" class="FIC111" @click="dialogVisible = true">{{ FIC111 }}</el-button>
-        <el-button size="small" type="success" class="FIC121" @click="dialogVisible = true">{{ FIC121 }}</el-button>
-        <el-button size="small" type="success" class="PIC221" @click="dialogVisible = true">{{ PIC221 }}</el-button>
-        <el-button size="small" type="success" class="TIC221" @click="dialogVisible = true">{{ TIC221 }}</el-button>
-        <el-button size="small" type="success" class="FIC204" @click="dialogVisible = true">{{ FIC204 }}</el-button>
+        <el-button size="small" type="success" class="FIC141" @click="changePoint('FIC141')">{{ FIC141 }}</el-button>
+        <el-button size="small" type="success" class="FIC111" @click="changePoint('FIC111')">{{ FIC111 }}</el-button>
+        <el-button size="small" type="success" class="FIC121" @click="changePoint('FIC121')">{{ FIC121 }}</el-button>
+        <el-button size="small" type="success" class="PIC221" @click="changePoint('PIC221')">{{ PIC221 }}</el-button>
+        <el-button size="small" type="success" class="TIC221" @click="changePoint('TIC221')">{{ TIC221 }}</el-button>
+        <el-button size="small" type="success" class="FIC204" @click="changePoint('FIC204')">{{ FIC204 }}</el-button>
 
-        <el-button size="small" type="success" class="PIC241" @click="dialogVisible = true">{{ PIC241 }}</el-button>
-        <el-button size="small" type="success" class="TIC241" @click="dialogVisible = true">{{ TIC241 }}</el-button>
-        <el-button size="small" type="success" class="FIC203" @click="dialogVisible = true">{{ FIC203 }}</el-button>
-        <el-button size="small" type="success" class="FIC201" @click="dialogVisible = true">{{ FIC201 }}</el-button>
+        <el-button size="small" type="success" class="PIC241" @click="changePoint('PIC241')">{{ PIC241 }}</el-button>
+        <el-button size="small" type="success" class="TIC241" @click="changePoint('TIC241')">{{ TIC241 }}</el-button>
+        <el-button size="small" type="success" class="FIC203" @click="changePoint('FIC203')">{{ FIC203 }}</el-button>
+        <el-button size="small" type="success" class="FIC201" @click="changePoint('FIC201')">{{ FIC201 }}</el-button>
 
-        <el-button size="small" type="success" class="PIC251" @click="dialogVisible = true">{{ PIC251 }}</el-button>
-        <el-button size="small" type="success" class="TIC251" @click="dialogVisible = true">{{ TIC251 }}</el-button>
-        <el-button size="small" type="success" class="FIC202" @click="dialogVisible = true">{{ FIC202 }}</el-button>
-        <el-button size="small" type="success" class="FIC231" @click="dialogVisible = true">{{ FIC231 }}</el-button>
+        <el-button size="small" type="success" class="PIC251" @click="changePoint('PIC251')">{{ PIC251 }}</el-button>
+        <el-button size="small" type="success" class="TIC251" @click="changePoint('TIC251')">{{ TIC251 }}</el-button>
+        <el-button size="small" type="success" class="FIC202" @click="changePoint('FIC202')">{{ FIC202 }}</el-button>
+        <el-button size="small" type="success" class="FIC231" @click="changePoint('FIC231')">{{ FIC231 }}</el-button>
     </div>
 
     
-    <el-dialog v-model="dialogVisible" width="40%" draggable @open="open()" @close="close()">
-        <div style="width: 740px; height: 380px;" :ref="chartRefs.set"></div>
+    <el-dialog v-model="dialogVisible" width="45%" draggable @open="open()" @close="close()">
+        <div style="width: 100%; height: 380px;" :ref="chartRefs.set"></div>
     </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onBeforeMount, reactive, ref, watch, onUnmounted } from 'vue'
+import { nextTick, onMounted, onBeforeMount, reactive, ref, watch, toRaw, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import { useIppdata } from '/@/stores/ippdata'
 import { useI18n } from 'vue-i18n'
@@ -48,34 +48,19 @@ const { TIC221, PIC221,FIC141,FIC111,
     FIC231,FIC202 } = storeToRefs(Ippdata);
 const { t } = useI18n()
 const chartRefs = useTemplateRefsList<HTMLDivElement>()
-let date = 1636326000*1000
+let date = 1637933400*1000
 const state: {
     point:string
     charts: any[]
     form: object
     pauseWork: boolean
-    data: {
-        time: string[],
-        TIC221: number[],PIC221: number[],FIC141: number[],FIC111: number[],
-        FIC121: number[],FIC204: number[],TIC241: number[],PIC241: number[],
-        FIC201A: number[],FIC201B: number[],FIC201C: number[],FIC203: number[],
-        FIC201: number[],TIC251: number[],PIC251: number[],FIC202A: number[],
-        FIC202B: number[],FIC202C: number[],FIC231: number[],FIC202: number[],
-    }
+
     chartdata: []
     postdata: object
 } = reactive({
-    point: '',
+    point: 'FIC141',
     charts: [],
     form: {},
-    data: {
-        time: [],
-        TIC221: [],PIC221: [],FIC141: [],FIC111: [],
-        FIC121: [],FIC204: [],TIC241: [],PIC241: [],
-        FIC201A: [],FIC201B: [],FIC201C: [],FIC203: [],
-        FIC201: [],TIC251: [],PIC251: [],FIC202A: [],
-        FIC202B: [],FIC202C: [],FIC231: [],FIC202: [],
-    },
     pauseWork: false,
     chartdata:[],
     postdata: {
@@ -84,100 +69,98 @@ const state: {
         full: false
     }
 })
+const chart_data: {
+    time: any[],
+    TIC221: any[],PIC221: any[],FIC141: any[],FIC111: any[],
+    FIC121: any[],FIC204: any[],TIC241: any[],PIC241: any[],
+    FIC201A: any[],FIC201B: any[],FIC201C: any[],FIC203: any[],
+    FIC201: any[],TIC251: any[],PIC251: any[],FIC202A: any[],
+    FIC202B: any[],FIC202C: any[],FIC231: any[],FIC202: any[],
+} = {
+    time: [],
+    TIC221: [],PIC221: [],FIC141: [],FIC111: [],
+    FIC121: [],FIC204: [],TIC241: [],PIC241: [],
+    FIC201A: [],FIC201B: [],FIC201C: [],FIC203: [],
+    FIC201: [],TIC251: [],PIC251: [],FIC202A: [],
+    FIC202B: [],FIC202C: [],FIC231: [],FIC202: [],
+}
 
 let sh:any; 
 watch(() => Ippdata.timestamps, () => {
     clearInterval(sh);
     sh = setInterval(()=>{
-        date += 60*30*60*1000
+        date += 30*60*1000
         state.postdata['time'] = new Date(date).toString()
         getOperationData('post', state.postdata).then((res) => {
             Ippdata.dataFill(res.data)
-            console.log(res.data);
         })
     },Ippdata.timestamps)
 })
 
 watch(() => Ippdata.id, () => {
-    if(state.data.TIC221.length < 100){
+    if(chart_data.TIC221.length < 50){
         for(let key in Ippdata.tobject()){
-            if(key in state.data){
-                let now:Date = new Date(Date.parse(Ippdata.tobject().time as string))
-                state.data[key].push({
-                    name: now,
+            if(key in chart_data){
+                let now:Date = new Date(+Date.parse(Ippdata.tobject().time as string))
+                chart_data[key].push({
+                    name: now.toString(),
                     value: [
-                        [now.getHours(), now.getMinutes(),now.getSeconds()].join(':'),
+                        now,
                         Ippdata.tobject()[key]
                     ]
                 })
             }
         }
-    } else if(state.data.TIC221.length >= 100) {
+    } else if(chart_data.TIC221.length >= 50) {
         for(let key in Ippdata.tobject()){
-            if(key in state.data){
-                state.data[key].shift();
+            if(key in chart_data){
+                chart_data[key].shift();
                 let now:Date = new Date(+Date.parse(Ippdata.tobject().time as string))
-                state.data[key].push({
-                    name: now,
+                chart_data[key].push({
+                    name: now.toString(),
                     value: [
-                        [now.getHours(), now.getMinutes(),now.getSeconds()].join(':'),
+                        now,
                         Ippdata.tobject()[key]
                     ]
                 })
             }
         }
     }
-    state.charts[0].setOption({
-        series: [
-            {
-                data: state.data[state.point]
-            }
-        ]
-    })
-    console.log(Ippdata);
+    
+    console.log(chart_data[state.point]);
+    
+    if (state.charts[0]) {
+        toRaw(state.charts[0]).setOption({
+            series: [
+                {
+                    data: chart_data[state.point]
+                }
+            ]
+        });
+    }
 })
-
-let data:any[] = []
-let now = new Date(2022, 9, 3);
-let oneDay = 24 * 3600 * 1000;
-let value = Math.random() * 1000;
-for (var i = 0; i < 100; i++) {
-    data.push(randomData());
-}
-function randomData() {
-    now = new Date(+now + oneDay);
-    value = value + Math.random() * 21 - 10;
-    return {
-        name: now.toString(),
-        value: [
-            [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-            Math.round(value)
-        ]
-    };
-}
 
 
 const initIppdataChart = () => {
     const IppdataChart = echarts.init(chartRefs.value[0] as HTMLElement)
     const option = {
         title: {
-            text: 'Ipp Dynamic Data'
+            text: 'Ipp ' + state.point + ' Data',
+            left: 'center',
         },
         tooltip: {
             trigger: 'axis',
             formatter: function (params: any) {
-                params = params[0];
-                var date = new Date(params.name);
+                params = params[0]
+                let time = params.value[0].toString()
                 return (
-                    date.getDate() +
-                    '/' +
-                    (date.getMonth() + 1) +
-                    ' : ' +
+                    time.slice(16,24) +
+                    ' / ' +
                     params.value[1]
                 );
             },
             axisPointer: {
-                animation: false
+                animation: true
             }
         },
         xAxis: {
@@ -198,7 +181,7 @@ const initIppdataChart = () => {
                 name: 'Fake Data',
                 type: 'line',
                 showSymbol: false,
-                data: state.data[state.point]
+                data: chart_data[state.point]
             }
         ]
     }
@@ -207,6 +190,8 @@ const initIppdataChart = () => {
 }
 onMounted(() => {
     sh = setInterval(()=>{
+        date += 30*60*1000
+        state.postdata['time'] = new Date(date).toString()
         getOperationData('post', state.postdata).then((res) => {
             Ippdata.dataFill(res.data)
         })
@@ -219,6 +204,15 @@ onBeforeMount(() => {
     }
 })
 
+onUnmounted(() => {
+    clearInterval(sh);
+})
+
+const changePoint = (point:string) => {
+    dialogVisible.value = true
+    state.point = point
+}
+
 const open = () => {
     nextTick(() => {
         //  执行echarts方法
@@ -228,6 +222,7 @@ const open = () => {
 
 const close = () => {
     state.charts[0].dispose()
+    state.charts.shift()
 }
 </script>
 

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: zwj
  * @Date: 2022-10-20 14:41:56
- * @LastEditTime: 2022-11-25 19:52:52
+ * @LastEditTime: 2022-11-28 13:08:37
  * @LastEditors: zwj
 -->
 <template>
@@ -38,20 +38,18 @@
         <IppVue v-if="devValue === 'Option1'"></IppVue>
         <IIppVue  v-if="devValue === 'Option2'"></IIppVue>
 
-        <el-dialog v-model="dialogVisible" width="45%" draggable @open="open()" @close="close()">
-            <div style="width: 740px; height: 380px;" :ref="chartRefs.set"></div>
+        <el-dialog v-model="dialogVisible" width="48%" draggable @open="open()" @close="close()">
+            <div style="width: 100%; height: 380px;" :ref="chartRefs.set"></div>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-tooltip content="显示24小时内的所有数据" placement="top">
                         <el-autocomplete
-                            v-model="point"
-                            :fetch-suggestions="querySearch"
-                            :trigger-on-focus="false"
-                            clearable
-                            class="inline-input w-25"
-                            placeholder="Please Input"
+                        v-model="point"
+                        :fetch-suggestions="querySearch"
+                        :trigger-on-focus="false"
+                        clearable
+                        class="inline-input w-25"
+                        placeholder="Please Input"
                         />
-                    </el-tooltip>
                     <el-button style="margin-left: 20px;" type="primary" @click="refreshchart()">
                         确认
                     </el-button>
@@ -116,17 +114,19 @@ const state: {
     }
 })
 
-let timestamps: Ref<number> = ref(10)
+let timestamps: Ref<number> = ref(Ippdata.timeset)
 let timestampsischange = true
 watchEffect(() => {
     if(freqValue.value === 'Option1' && timestamps.value && timestampsischange) {
         timestampsischange = false
+        Ippdata.timeset = timestamps.value
         setTimeout(()=>{
             Ippdata.timestamps = timestamps.value*1000
             timestampsischange = true
         },2000)
     } else if(freqValue.value === 'Option2' && timestamps.value && timestampsischange) {
         timestampsischange = false
+        Ippdata.timeset = timestamps.value
         setTimeout(()=>{
             Ippdata.timestamps = timestamps.value*60*1000
             timestampsischange = true

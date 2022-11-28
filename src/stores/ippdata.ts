@@ -2,7 +2,7 @@
  * @Author: zwj
  * @Date: 2022-11-18 15:28:51
  * @LastEditors: zwj
- * @LastEditTime: 2022-11-25 16:40:49
+ * @LastEditTime: 2022-11-27 11:32:08
  * @Description: 
  */
 import { defineStore } from 'pinia'
@@ -11,6 +11,7 @@ import { Ippdata } from '/@/stores/interface'
 export const useIppdata = defineStore('Ippdata', {
     state: (): Ippdata => {
         return {
+            timeset: 10,
             timestamps:10*1000,
             id: 0,
             time: '',
