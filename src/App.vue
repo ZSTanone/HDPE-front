@@ -2,7 +2,7 @@
  * @Author: zwj
  * @Date: 2022-11-03 10:22:55
  * @LastEditors: zwj
- * @LastEditTime: 2022-11-28 11:14:03
+ * @LastEditTime: 2022-11-28 11:19:30
  * @Description: 
 -->
 <template>
@@ -22,6 +22,7 @@ import { useTerminal } from '/@/stores/terminal'
 const config = useConfig()
 const route = useRoute()
 const terminal = useTerminal()
+
 
 
 // 初始化 element 的语言包
