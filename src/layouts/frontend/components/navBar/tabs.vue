@@ -23,7 +23,7 @@
 import { nextTick, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate, RouteLocationNormalized } from 'vue-router'
 import { useConfig } from '/@/stores/config'
-import { useNavTabs } from '/@/stores/navTabs'
+import { useUserNavTabs } from '/@/stores/navTabsUser'
 import { useTemplateRefsList } from '@vueuse/core'
 import type { ContextMenuItem, ContextmenuItemClickEmitArg } from '/@/components/contextmenu/interface'
 import useCurrentInstance from '/@/utils/useCurrentInstance'
@@ -34,7 +34,7 @@ import { getFirstRoute, routePush } from '/@/utils/router'
 const route = useRoute()
 const router = useRouter()
 const config = useConfig()
-const navTabs = useNavTabs()
+const navTabs = useUserNavTabs()
 
 const { proxy } = useCurrentInstance()
 const tabScrollbarRef = ref()
@@ -97,7 +97,7 @@ const toLastTab = () => {
     if (lastTab) {
         router.push(lastTab.path)
     } else {
-        router.push('/admin')
+        router.push('/user')
     }
 }
 

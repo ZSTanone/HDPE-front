@@ -97,7 +97,7 @@ const adminBaseRoute: RouteRecordRaw = {
 }
 
 /*
- * 会员中心基础静态路由
+ * 用户中心基础静态路由
  */
 const memberCenterBaseRoute: RouteRecordRaw = {
     path: '/user',

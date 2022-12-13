@@ -39,7 +39,7 @@ function createAxios(axiosConfig: AxiosRequestConfig, options: Options = {}, loa
 
     const Axios = axios.create({
         baseURL: getUrl(),
-        timeout: 1000 * 10,
+        timeout: 1000 * 30,
         headers: {
             'Content-Type': 'application/json',
             'think-lang': config.lang.defaultLang,

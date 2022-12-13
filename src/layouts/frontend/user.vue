@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: zwj
  * @Date: 2022-10-20 10:31:34
- * @LastEditTime: 2022-10-27 20:06:08
+ * @LastEditTime: 2022-12-07 13:14:53
  * @LastEditors: zwj
 -->
 <template>
@@ -57,7 +57,7 @@ const init = () => {
         res.data.userInfo.refreshToken = userInfo.refreshToken
         userInfo.dataFill(res.data.userInfo)
         // 获取用户有权限访问的资源
-        if (res.data.menus) {
+        if (res.data.menus) {          
             handleMemberCenterRoute(res.data.menus)
 
 
@@ -74,7 +74,6 @@ const init = () => {
 
             // 跳转到第一个菜单
             let firstRoute = getFirstRoute(navTabs.state.tabsViewRoutes)
-            console.log(firstRoute, 'firstRoute');
             
             if (firstRoute) routePush(firstRoute.path)
         }

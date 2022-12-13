@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: zwj
  * @Date: 2022-10-20 10:31:34
- * @LastEditTime: 2022-10-27 16:46:35
+ * @LastEditTime: 2022-12-12 19:49:47
  * @LastEditors: zwj
  */
 import { defineStore } from 'pinia'
@@ -17,6 +17,7 @@ export const useBaAccount = defineStore('baAccount', {
         return {
             id: 0,
             username: '',
+            avatar: '',
             email: '',
             mobile: '',
             lastlogintime: '',

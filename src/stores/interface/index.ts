@@ -58,6 +58,7 @@ export interface AdminInfo {
 export interface UserInfo {
     id: number
     username: string
+    avatar: string
     email: string
     mobile: string
     lastlogintime: string
@@ -118,6 +119,8 @@ export interface Ippdata {
     timestamps: number
     id: number
     time?: string
+    Output_R201_MW?: number[]
+    Output_R202_MW?: number[]
     TIC221: number
     PIC221: number
     FIC141: number

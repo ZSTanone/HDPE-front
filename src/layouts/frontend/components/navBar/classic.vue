@@ -1,3 +1,10 @@
+<!--
+ * @Author: zwj
+ * @Date: 2022-11-26 11:12:41
+ * @LastEditors: zwj
+ * @LastEditTime: 2022-12-07 14:24:10
+ * @Description: 
+-->
 <template>
     <div class="nav-bar">
         <div v-if="config.layout.shrink && config.layout.menuCollapse" class="unfold">
@@ -10,7 +17,7 @@
 
 <script setup lang="ts">
 import { useConfig } from '/@/stores/config'
-import NavTabs from '/@/layouts/backend/components/navBar/tabs.vue'
+import NavTabs from '/@/layouts/frontend/components/navBar/tabs.vue'
 import NavMenus from '../navMenus.vue'
 import { showShade } from '/@/utils/pageShade'
 

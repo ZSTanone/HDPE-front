@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: zwj
  * @Date: 2022-10-20 14:41:56
- * @LastEditTime: 2022-11-28 13:08:37
+ * @LastEditTime: 2022-12-12 19:57:52
  * @LastEditors: zwj
 -->
 <template>
@@ -66,7 +66,7 @@ import IIppVue from './IIpp.vue'
 import * as echarts from 'echarts'
 import { useIppdata } from '/@/stores/ippdata'
 import type { Ippdata } from '/@/stores/interface'
-import { getOperationData } from '/@/api/frontend/user/index'
+import { getOperationData, monitorOptions1 } from '/@/api/frontend/user/index'
 import { useTemplateRefsList } from '@vueuse/core';
 
 interface RestaurantItem {
@@ -208,7 +208,6 @@ const initFulldataChart = () => {
                 type: 'line',
                 smooth: true,
                 symbol: 'none',
-                areaStyle: {},
                 data: state.data
             }
         ]
@@ -219,6 +218,10 @@ const initFulldataChart = () => {
 
 onMounted(() => {
     restaurants.value = loadAll()
+    monitorOptions1('get').then((res) => {
+
+    })
+    
 })
 
 onBeforeMount(() => {
@@ -247,6 +250,14 @@ const refreshchart = () => {
     state.data = state.getdata.map((item:Ippdata) => [+new Date(Date.parse(item.time as string)), item[point.value]])
     initFulldataChart()
 }
+
+</script>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+    name: 'monitor/options1',
+})
 </script>
 
 <style scoped lang="scss">

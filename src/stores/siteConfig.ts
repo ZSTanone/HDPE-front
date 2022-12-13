@@ -1,3 +1,10 @@
+/*
+ * @Author: zwj
+ * @Date: 2022-11-26 11:12:41
+ * @LastEditors: zwj
+ * @LastEditTime: 2022-11-28 20:28:51
+ * @Description: 
+ */
 import { defineStore } from 'pinia'
 import { SiteConfig } from '/@/stores/interface'
 

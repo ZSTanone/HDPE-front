@@ -1,10 +1,16 @@
+<!--
+ * @Author: zwj
+ * @Date: 2022-11-26 11:12:41
+ * @LastEditors: zwj
+ * @LastEditTime: 2022-12-07 13:11:21
+ * @Description: 
+-->
 <template>
     <el-container class="is-vertical">
         <Header />
         <el-scrollbar :style="layoutMainScrollbarStyle()" ref="mainScrollbarRef">
             <el-row class="frontend-footer-brother" justify="center">
                 <el-col class="user-layouts" :span="16" :xs="24">
-                    <Aside class="hidden-sm-and-down" />
                     <Main />
                 </el-col>
             </el-row>

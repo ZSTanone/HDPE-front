@@ -1,99 +1,97 @@
+<!--
+ * @Description: 
+ * @Author: zwj
+ * @Date: 2022-10-20 14:41:56
+ * @LastEditTime: 2022-12-09 15:09:56
+ * @LastEditors: zwj
+-->
 <template>
-    <div class="default-main ba-table-box">
-        <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
+    <div class="default-main">
+        <el-row>
+            <el-col :span="2.9" style="margin-right: 10px;">
+                <el-tooltip content="选取聚丙烯装置" placement="top">
+                    <el-select v-model="devValue" style="width:150px" placeholder="I套聚丙烯装置">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
+                </el-tooltip>
+            </el-col>
+            <el-col :span="1.2" style="margin-right: 10px;">
+                <el-tooltip content="显示进料或出料表格" placement="top">
+                    <el-checkbox-group v-model="checkIOGroup">
+                        <el-checkbox-button v-for="item in checkIOList" :key="item" :label="item">
+                            {{ item }}
+                        </el-checkbox-button>
+                    </el-checkbox-group>
+                </el-tooltip>
+            </el-col>
 
-        <!-- 表格顶部菜单 -->
-        <TableHeader
-            :buttons="['refresh', 'add', 'edit', 'delete', 'unfold', 'quickSearch', 'columnDisplay']"
-            :quick-search-placeholder="t('quick Search Placeholder', { fields: t('auth.menu.title') })"
-        />
-        <!-- 表格 -->
-        <!-- 要使用`el-table`组件原有的属性，直接加在Table标签上即可 -->
-        <Table ref="tableRef" :pagination="false" />
+            <el-col :span="1.8" style="margin-right: 10px;">
+                <el-tooltip content="当前产品牌号" placement="top">
+                    <el-button type="info" style="font-size: 17px">
+                        M26ET
+                    </el-button>
+                </el-tooltip>
+            </el-col>
+        </el-row>
 
-        <!-- 表单 -->
-        <PopupForm />
+        <IPPformVue v-if="devValue === 'Option1'"></IPPformVue>
+        <IIPPformVue v-if="devValue === 'Option2'"></IIPPformVue>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, provide } from 'vue'
-import { authMenu } from '/@/api/controllerUrls'
-import PopupForm from './popupForm.vue'
-import Table from '/@/components/table/index.vue'
-import TableHeader from '/@/components/table/header/index.vue'
-import { defaultOptButtons } from '/@/components/table'
-import { useI18n } from 'vue-i18n'
-import { baTableApi } from '/@/api/common'
-import baTableClass from '/@/utils/baTable'
+import { onMounted, ref } from 'vue'
+import IPPformVue from './IPPform.vue'
+import IIPPformVue from './IIPPform.vue';
 
-const { t } = useI18n()
-const tableRef = ref()
-const baTable = new baTableClass(
-    new baTableApi(authMenu),
+const options = [
     {
-        expandAll: false,
-        dblClickNotEditColumn: [undefined, 'keepalive', 'status'],
-        column: [
-            { type: 'selection', align: 'center' },
-            { label: t('auth.menu.title'), prop: 'title', align: 'left' },
-            { label: t('auth.menu.Icon'), prop: 'icon', align: 'center', width: '60', render: 'icon', default: 'el-icon-Minus' },
-            { label: t('auth.menu.name'), prop: 'name', align: 'center', 'show-overflow-tooltip': true },
-            {
-                label: t('auth.menu.type'),
-                prop: 'type',
-                align: 'center',
-                render: 'tag',
-                custom: { menu: 'danger', menu_dir: 'success', button: 'info' },
-                replaceValue: { menu: t('auth.menu.type menu'), menu_dir: t('auth.menu.type menu_dir'), button: t('auth.menu.type button') },
-            },
-            { label: t('auth.menu.cache'), prop: 'keepalive', align: 'center', width: '80', render: 'switch' },
-            { label: t('state'), prop: 'status', align: 'center', width: '80', render: 'switch' },
-            { label: t('updatetime'), prop: 'updatetime', align: 'center', width: '160', render: 'datetime' },
-            {
-                label: t('operate'),
-                align: 'center',
-                width: '130',
-                render: 'buttons',
-                buttons: defaultOptButtons(),
-            },
-        ],
-        dragSortLimitField: 'pid',
+        value: 'Option1',
+        label: 'IPP关键参数',
+    }, {
+        value: 'Option2',
+        label: 'IIPP关键参数',
     },
-    {
-        defaultItems: {
-            type: 'menu',
-            menu_type: 'tab',
-            extend: 'none',
-            keepalive: 0,
-            status: '1',
-            icon: 'el-icon-Minus',
-        },
-    },
-    {
-        // 获得编辑数据后
-        requestEdit: () => {
-            if (baTable.form.items && !baTable.form.items.icon) baTable.form.items.icon = 'el-icon-Minus'
-        },
-    }
-)
-
-provide('baTable', baTable)
+]
+const devValue = ref('Option1')
+const checkIOGroup = ref(['进料'])
+const checkIOList = ['进料', '出料']
 
 onMounted(() => {
-    baTable.table.ref = tableRef.value
-    baTable.mount()
-    baTable.getIndex()?.then(() => {
-        baTable.dragSort()
+    monitorOptions2('get').then((res) => {
+        
     })
 })
 </script>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { monitorOptions2 } from '/@/api/frontend/user';
 export default defineComponent({
-    name: 'auth/menu',
+    name: 'monitor/options2',
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.el-row {
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--ba-bg-color-overlay);
+    border: 1px solid var(--ba-border-color);
+    border-bottom: none;
+    padding: 13px 15px;
+    font-size: 14px;
+}
+
+.el-row:last-child {
+    margin-bottom: 0;
+}
+
+.el-col {
+    border-radius: 4px;
+}
+</style>

@@ -2,7 +2,7 @@
  * @Author: zwj
  * @Date: 2022-11-18 15:28:51
  * @LastEditors: zwj
- * @LastEditTime: 2022-11-27 11:32:08
+ * @LastEditTime: 2022-12-12 11:23:43
  * @Description: 
  */
 import { defineStore } from 'pinia'
@@ -15,6 +15,8 @@ export const useIppdata = defineStore('Ippdata', {
             timestamps:10*1000,
             id: 0,
             time: '',
+            Output_R201_MW:[],
+            Output_R202_MW:[],
             TIC221: 0,
             PIC221: 0,
             FIC141: 0,
@@ -37,12 +39,17 @@ export const useIppdata = defineStore('Ippdata', {
             FIC202: 0,
         }
     },
+    getters:{
+        getMw:(state) => [state.Output_R201_MW, state.Output_R202_MW],
+        getDcs:(state) => [state.TIC221, state.PIC221, state.FIC141, state.FIC111,
+            state.FIC121, state.FIC204, state.TIC241, state.PIC241]
+    },
     actions: {
         dataFill(state: Ippdata) {
             this.$state = { ...this.$state, ...state }
         }, 
         tobject() {
             return {...this.$state}
-        }
+        },
     },
 })

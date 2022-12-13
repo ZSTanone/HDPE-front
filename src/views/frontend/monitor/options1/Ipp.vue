@@ -2,7 +2,7 @@
  * @Author: zwj
  * @Date: 2022-11-14 16:00:30
  * @LastEditors: zwj
- * @LastEditTime: 2022-11-27 11:27:01
+ * @LastEditTime: 2022-12-08 15:54:03
  * @Description: 
 -->
 <template>
@@ -127,8 +127,6 @@ watch(() => Ippdata.id, () => {
         }
     }
     
-    console.log(chart_data[state.point]);
-    
     if (state.charts[0]) {
         toRaw(state.charts[0]).setOption({
             series: [
@@ -189,20 +187,21 @@ const initIppdataChart = () => {
     state.charts.push(IppdataChart)
 }
 onMounted(() => {
+
     sh = setInterval(()=>{
         date += 30*60*1000
         state.postdata['time'] = new Date(date).toString()
         getOperationData('post', state.postdata).then((res) => {
             Ippdata.dataFill(res.data)
         })
-    },Ippdata.timestamps)
+    }, Ippdata.timestamps)
 })
 
-onBeforeMount(() => {
-    for (const key in state.charts) {
-        state.charts[key].dispose()
-    }
-})
+// onBeforeMount(() => {
+//     for (const key in state.charts) {
+//         state.charts[key].dispose()
+//     }
+// })
 
 onUnmounted(() => {
     clearInterval(sh);
@@ -221,8 +220,8 @@ const open = () => {
 }
 
 const close = () => {
-    state.charts[0].dispose()
-    state.charts.shift()
+    // state.charts[0].dispose()
+    // state.charts.shift()
 }
 </script>
 

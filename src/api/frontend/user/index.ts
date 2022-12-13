@@ -26,19 +26,36 @@ export function overview() {
     })
 }
 
-export function getOperationData(method: 'get' | 'post', params: object = {}): ApiPromise {
+export function monitorOptions1(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
-        url: controllerUrl + 'getOperationData',
+        url: controllerUrl + 'monitor/options1',
         data: params,
         method: method,
     }) as ApiPromise
 }
 
-export function getIIppData() {
+export function getOperationData(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
-        url: controllerUrl + 'getIIppData',
-        method: 'get',
-    })
+        url: controllerUrl + 'monitor/options1/getOperationData',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+export function monitorOptions2(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'monitor/options2',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+export function runAspen(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'monitor/options2/runAspen',
+        data: params,
+        method: method,
+    }) as ApiPromise
 }
 
 export function postProfile(params: anyObj) {

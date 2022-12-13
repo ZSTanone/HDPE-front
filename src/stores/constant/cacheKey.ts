@@ -1,3 +1,10 @@
+/*
+ * @Author: zwj
+ * @Date: 2022-11-26 11:12:41
+ * @LastEditors: zwj
+ * @LastEditTime: 2022-12-12 19:57:26
+ * @Description: 
+ */
 /**
  * 本地缓存Key
  */
@@ -7,6 +14,7 @@ export const ADMIN_INFO = 'adminInfo'
 
 // WEB端布局配置
 export const STORE_CONFIG = 'storeConfig_v2'
+
 // 后台标签页
 export const STORE_TAB_VIEW_CONFIG = 'storeTabViewConfig'
 // 终端
@@ -23,3 +31,4 @@ export const USER_INFO = 'userInfo'
 
 // ba官网用户信息
 export const BA_ACCOUNT = 'ba_account'
+

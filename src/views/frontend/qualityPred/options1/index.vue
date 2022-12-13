@@ -1,101 +1,92 @@
 <!--
- * @Description: 
  * @Author: zwj
- * @Date: 2022-10-20 14:41:56
- * @LastEditTime: 2022-10-27 11:02:05
+ * @Date: 2022-11-26 11:12:41
  * @LastEditors: zwj
+ * @LastEditTime: 2022-12-09 16:08:51
+ * @Description: 
 -->
 <template>
-    <div class="default-main ba-table-box">
-        <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
+    <div class="default-main">
+        <el-row>
+            <el-col :span="2.9" style="margin-right: 10px;">
+                <el-tooltip content="选取聚丙烯装置" placement="top">
+                    <el-select v-model="devValue" style="width:150px" placeholder="I套聚丙烯装置">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
+                </el-tooltip>
+            </el-col>
+            <el-col :span="1.2" style="margin-right: 10px;">
+                <el-tooltip content="最近熔指采样数据" placement="top">
+                    <el-button type="primary">
+                        质量指标
+                    </el-button>
+                </el-tooltip>
+            </el-col>
+            <el-col :span="1.2" style="margin-right: 10px;">
+                <el-tooltip content="散点图表示分子量分布" placement="top">
+                    <el-button type="primary">
+                        微观结构
+                    </el-button>
+                </el-tooltip>
+            </el-col>
+        </el-row>
 
-        <!-- 表格顶部菜单 -->
-        <TableHeader
-            :buttons="['refresh', 'add', 'edit', 'delete', 'comSearch', 'quickSearch', 'columnDisplay']"
-            :quick-search-placeholder="t('quick Search Placeholder', { fields: t('auth.admin.username') + '/' + t('auth.admin.nickname') })"
-        />
-
-        <!-- 表格 -->
-        <!-- 要使用`el-table`组件原有的属性，直接加在Table标签上即可 -->
-        <Table />
-
-        <!-- 表单 -->
-        <PopupForm />
+        <IPPVue v-if="devValue === 'Option1'"></IPPVue>
+        <IIPPVue  v-if="devValue === 'Option2'"></IIPPVue>
     </div>
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue'
-import baTableClass from '/@/utils/baTable'
-import { authAdmin } from '/@/api/controllerUrls'
-import PopupForm from './popupForm.vue'
-import Table from '/@/components/table/index.vue'
-import TableHeader from '/@/components/table/header/index.vue'
-import { defaultOptButtons } from '/@/components/table'
-import { baTableApi } from '/@/api/common'
-import { useI18n } from 'vue-i18n'
+import { onMounted, ref } from 'vue'
+import IPPVue from './Ipp.vue';
+import IIPPVue from './IIpp.vue';
 
-const { t } = useI18n()
-
-const baTable = new baTableClass(
-    new baTableApi(authAdmin),
+const options = [
     {
-        column: [
-            { type: 'selection', align: 'center', operator: false },
-            { label: t('id'), prop: 'id', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query'), width: 70 },
-            { label: t('auth.admin.username'), prop: 'username', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query') },
-            { label: t('auth.admin.nickname'), prop: 'nickname', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query') },
-            { label: t('auth.admin.grouping'), prop: 'group_name_arr', align: 'center', operator: false, render: 'tags' },
-            { label: t('auth.admin.head portrait'), prop: 'avatar', align: 'center', render: 'image', operator: false },
-            { label: t('auth.admin.mailbox'), prop: 'email', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query') },
-            { label: t('auth.admin.mobile'), prop: 'mobile', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query') },
-            {
-                label: t('auth.admin.Last login'),
-                prop: 'lastlogintime',
-                align: 'center',
-                render: 'datetime',
-                sortable: 'custom',
-                operator: 'RANGE',
-                width: 160,
-            },
-            { label: t('createtime'), prop: 'createtime', align: 'center', render: 'datetime', sortable: 'custom', operator: 'RANGE', width: 160 },
-            {
-                label: t('state'),
-                prop: 'status',
-                align: 'center',
-                render: 'tag',
-                custom: { '0': 'danger', '1': 'success' },
-                replaceValue: { '0': t('Disable'), '1': t('Enable') },
-            },
-            {
-                label: t('operate'),
-                align: 'center',
-                width: '100',
-                render: 'buttons',
-                buttons: defaultOptButtons(['edit', 'delete']),
-                operator: false,
-            },
-        ],
-        dblClickNotEditColumn: [undefined, 'status'],
+        value: 'Option1',
+        label: 'IPP质量预测',
+    }, {
+        value: 'Option2',
+        label: 'IIPP质量预测',
     },
-    {
-        defaultItems: {
-            status: '1',
-        },
-    }
-)
+]
+const devValue = ref('Option1')
 
-provide('baTable', baTable)
-
-baTable.mount()
-baTable.getIndex()
+onMounted(() => {
+    monitorOptions2('get').then((res) => {
+        
+    })
+})
 </script>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { monitorOptions2 } from '/@/api/frontend/user';
 export default defineComponent({
-    name: 'account/options1',
+    name: 'qualityPred/options1',
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.el-row {
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--ba-bg-color-overlay);
+    border: 1px solid var(--ba-border-color);
+    border-bottom: none;
+    padding: 13px 15px;
+    font-size: 14px;
+}
+
+.el-row:last-child {
+    margin-bottom: 0;
+}
+
+.el-col {
+    border-radius: 4px;
+}
+</style>
