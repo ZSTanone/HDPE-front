@@ -9,6 +9,18 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.el-date-picker {
+    width: 600px;
+}
+.el-date-picker .el-picker-panel__content {
+    width: 600px;
+}
+.el-picker-panel__icon-btn {
+    font-size: 24px;
+}
+
+
 .el-divider__text.is-center {
     transform: translateX(-50%) translateY(-62%);
 }

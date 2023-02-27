@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onBeforeMount, reactive, ref, watch, toRaw, onUnmounted } from 'vue'
+import { nextTick, onMounted, reactive, ref, watch, toRaw, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import { useIppdata } from '/@/stores/ippdata'
 import { useI18n } from 'vue-i18n'
@@ -186,6 +186,7 @@ const initIppdataChart = () => {
     IppdataChart.setOption(option)
     state.charts.push(IppdataChart)
 }
+
 onMounted(() => {
 
     sh = setInterval(()=>{

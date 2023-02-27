@@ -42,7 +42,7 @@ function createAxios(axiosConfig: AxiosRequestConfig, options: Options = {}, loa
         timeout: 1000 * 30,
         headers: {
             'Content-Type': 'application/json',
-            'think-lang': config.lang.defaultLang,
+            'lang': config.lang.defaultLang,
             server: true,
         },
         responseType: 'json',

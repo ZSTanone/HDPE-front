@@ -2,7 +2,7 @@
  * @Author: zwj
  * @Date: 2022-11-26 11:12:41
  * @LastEditors: zwj
- * @LastEditTime: 2022-12-09 16:08:51
+ * @LastEditTime: 2022-12-21 13:30:26
  * @Description: 
 -->
 <template>
@@ -17,21 +17,21 @@
             </el-col>
             <el-col :span="1.2" style="margin-right: 10px;">
                 <el-tooltip content="最近熔指采样数据" placement="top">
-                    <el-button type="primary">
+                    <el-button type="primary" @click="onClick('fun1')">
                         质量指标
                     </el-button>
                 </el-tooltip>
             </el-col>
             <el-col :span="1.2" style="margin-right: 10px;">
                 <el-tooltip content="散点图表示分子量分布" placement="top">
-                    <el-button type="primary">
+                    <el-button type="primary" @click="onClick('fun2')">
                         微观结构
                     </el-button>
                 </el-tooltip>
             </el-col>
         </el-row>
 
-        <IPPVue v-if="devValue === 'Option1'"></IPPVue>
+        <IPPVue :indicatorValue="indicatorValue"  v-if="devValue === 'Option1'"></IPPVue>
         <IIPPVue  v-if="devValue === 'Option2'"></IIPPVue>
     </div>
 </template>
@@ -51,9 +51,17 @@ const options = [
     },
 ]
 const devValue = ref('Option1')
+const indicatorValue = ref('fun2')
+
+const onClick = (fun:string) => {
+    indicatorValue.value = fun
+    if (fun == 'fun1') {
+
+    }
+}
 
 onMounted(() => {
-    monitorOptions2('get').then((res) => {
+    qualityOptions1('get').then((res) => {
         
     })
 })
@@ -61,7 +69,7 @@ onMounted(() => {
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { monitorOptions2 } from '/@/api/frontend/user';
+import { qualityOptions1 } from '/@/api/frontend/user';
 export default defineComponent({
     name: 'qualityPred/options1',
 })

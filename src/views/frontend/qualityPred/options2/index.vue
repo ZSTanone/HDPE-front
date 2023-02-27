@@ -1,3 +1,10 @@
+<!--
+ * @Author: zwj
+ * @Date: 2022-11-26 11:12:41
+ * @LastEditors: zwj
+ * @LastEditTime: 2022-12-16 20:48:44
+ * @Description: 
+-->
 <template>
     <div class="default-main ba-table-box">
         <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
@@ -9,10 +16,7 @@
         />
         <!-- 表格 -->
         <!-- 要使用`el-table`组件原有的属性，直接加在Table标签上即可 -->
-        <Table ref="tableRef" :pagination="false" />
-
-        <!-- 表单 -->
-        <PopupForm />
+        <Table ref="tableRef" :pagination="true" />
     </div>
 </template>
 

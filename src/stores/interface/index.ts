@@ -142,3 +142,14 @@ export interface Ippdata {
     FIC231: number
     FIC202: number
 }
+
+export interface MIData {
+    predict: {
+        'time': string
+        'value': number
+    }
+    real: {
+        'time': string
+        'value': number | null
+    }
+}
