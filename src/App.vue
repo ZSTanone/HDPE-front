@@ -6,6 +6,7 @@
  * @Description: 
 -->
 <template>
+    <!-- 用于控制语言的切换 -->
     <el-config-provider :locale="lang">
         <router-view></router-view>
     </el-config-provider>
