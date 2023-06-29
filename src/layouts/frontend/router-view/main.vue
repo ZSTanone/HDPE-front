@@ -95,6 +95,11 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 }
+
+// 给主内容区加一个背景颜色
+.layout-main{
+    // background-color: rgb(68, 183, 218);
+}
 .layout-main-scrollbar {
     width: 100%;
     position: relative;

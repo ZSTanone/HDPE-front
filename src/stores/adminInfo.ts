@@ -34,6 +34,7 @@ export const useAdminInfo = defineStore('adminInfo', {
             this.super = val
         },
     },
+    // 指定将状态同步保存到localStorage时的key
     persist: {
         key: ADMIN_INFO,
     },

@@ -100,22 +100,29 @@ const checkIOList = ['进料', '出料']
 const checkGpcGroup = ref(['R200', 'R201', 'R202'])
 const checkGpcList = ['R200', 'R201', 'R202']
 
-let timestamps: Ref<number> = ref(20)
+let timestamps: Ref<number> = ref(20)    //默认20min
 
 let timestamps_flag = true 
 watch(timestamps, () => {
     if (timestamps_flag) {
         timestamps_flag = false
+        // 防抖 修改完查询时间3s后向后端发送请求，表明时间修改完成
         setTimeout(() => {
             timestamps_flag = true
             let postdata = {
                 'timing': timestamps.value
             }
+            // 这个不是用于请求反应器数据的，而是通知后端查询时间改变了
             getPPData('post', postdata).then((res) => {
         
             }) 
         }, 3000);
     }
+})
+
+// 测试多选框与其控制的几个响应式变量
+watch([radio,checkIOGroup,checkGpcGroup],()=>{
+    console.log('当前显示的内容有',radio.value,'+',checkGpcGroup.value,'+',checkIOGroup.value);
 })
 
 

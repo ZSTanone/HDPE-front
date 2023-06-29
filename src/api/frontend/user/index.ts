@@ -5,6 +5,7 @@ import { useConfig } from '/@/stores/config'
 const controllerUrl = '/api/user/'
 const accountUrl = '/api/account/'
 
+// 获取菜单
 export function index() {
     return createAxios({
         url: controllerUrl + 'index',
@@ -12,6 +13,7 @@ export function index() {
     })
 }
 
+// 登录
 export function checkIn(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'checkIn',
@@ -27,6 +29,7 @@ export function overview() {
     })
 }
 
+// 工艺流程页面IPP初始请求(无返回值的)
 export function monitorOptions1(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'monitor/options1',
@@ -35,6 +38,7 @@ export function monitorOptions1(method: 'get' | 'post', params: object = {}): Ap
     }) as ApiPromise
 }
 
+// 工艺流程页面IPP获取各点位数据
 export function getOperationData(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'monitor/options1/getOperationData',
@@ -43,6 +47,7 @@ export function getOperationData(method: 'get' | 'post', params: object = {}): A
     }) as ApiPromise
 }
 
+// 关键参数页面的请求（无返回数据）
 export function monitorOptions2(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'monitor/options2',
@@ -59,6 +64,7 @@ export function runAspen(method: 'get' | 'post', params: object = {}): ApiPromis
     }) as ApiPromise
 }
 
+// 关键参数页面-历史数据-查询
 export function getPPData(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'monitor/options2/getPPData',
@@ -67,6 +73,7 @@ export function getPPData(method: 'get' | 'post', params: object = {}): ApiPromi
     }) as ApiPromise
 }
 
+// 质量预测
 export function qualityOptions1(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'qualityPred/options1',
@@ -75,6 +82,51 @@ export function qualityOptions1(method: 'get' | 'post', params: object = {}): Ap
     }) as ApiPromise
 }
 
+// -----------------------------------------------------------------------------
+// 新总貌查询数据
+export function getHDPEData(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'menu3/opt1',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+export function getR1Para(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'menu3/opt3/R1',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+export function getR2Para(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'menu3/opt3/R2',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+// 新页面的质量预测
+export function qualityOptions_new(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'menu3/opt1',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+// 新页面的质量预测的查询按钮（应该是post方法，但是目前还不完善）
+export function getHdpeData(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'menu3/opt1/getHdpeData',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+// 运行预测模型
 export function runPredictModel(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'qualityPred/options1/runPredictModel',
@@ -83,6 +135,7 @@ export function runPredictModel(method: 'get' | 'post', params: object = {}): Ap
     }) as ApiPromise
 }
 
+// 获取熔指数据
 export function getMIData(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'monitor/options2/getMIData',
@@ -91,6 +144,7 @@ export function getMIData(method: 'get' | 'post', params: object = {}): ApiPromi
     }) as ApiPromise
 }
 
+// 上传目标的分子量分布
 export function uploadTargetMW(method: 'get' | 'post', params: object = {}): ApiPromise {
     const config = useConfig()
     return createAxios({

@@ -24,6 +24,8 @@
     "pinia": "^2.0.11",
     "pinia-plugin-persistedstate": "^1.2.3",
     "screenfull": "^6.0.1",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.2",
     "sortablejs": "^1.15.0",
     "v-code-diff": "^0.3.10",
     "vue": "~3.2.25",

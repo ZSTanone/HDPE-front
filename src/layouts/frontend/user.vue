@@ -34,6 +34,7 @@ const memberCenter = useMemberCenter()
 
 onBeforeRouteUpdate((to) => {
     memberCenter.setActiveRoute(to)
+    // console.log('路由发生变化',to);
 })
 
 onMounted(() => {
@@ -54,8 +55,12 @@ onUnmounted(() => {
 
 const init = () => {
     index().then((res) => {
+        // 更新token
+        // console.log('后端返回的index接口响应',res);
         res.data.userInfo.refreshToken = userInfo.refreshToken
+
         userInfo.dataFill(res.data.userInfo)
+        
         // 获取用户有权限访问的资源
         if (res.data.menus) {          
             handleMemberCenterRoute(res.data.menus)

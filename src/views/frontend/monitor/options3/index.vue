@@ -1,5 +1,6 @@
 <template>
     <div class="default-main ba-table-box">
+        <h1>隐藏页面</h1>
         <el-alert class="ba-table-alert" v-if="baTable.table.remark" :title="baTable.table.remark" type="info" show-icon />
 
         <!-- 表格顶部菜单 -->
@@ -141,4 +142,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+// .default-main{
+//     height: 800px;
+//     width: 1200px;
+//     background-color: aqua;
+// }
+</style>

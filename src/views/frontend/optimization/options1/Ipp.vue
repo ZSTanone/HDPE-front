@@ -1,9 +1,11 @@
 <template lang="">
     <el-card class="box-card" :body-style="{ width: '100%', padding: '0px', marginTop: '2ch',}" shadow="never">
         <el-row :gutter="20" style="margin-top: 10px;">
+            <!-- 分子量分布对比图，左上 -->
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
                 <div class="chart" :ref="chartRefs.set"></div>
             </el-col>
+            <!-- 右上 -->
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
                 <div style="width: 50%; font-size: 22px; fontWeight: bold; margin: 2% auto">
                     优化前后重均分子量、PDI
@@ -11,11 +13,14 @@
                 <el-table 
                     :data="MwAndPdiTable" :row-style="{ height: '40px' }" :cell-style="setCellColor"
                     :style="Table" :header-cell-style="headerStyle1" :border="false">
+                    <!-- 第一列：分子量数据 -->
                     <el-table-column prop="description" label="分子量数据" align="center" />
+                    <!-- 第二列：R201反应器 -->
                     <el-table-column prop="name" label="R201反应器" align="center" >
                         <el-table-column prop="R201MWWValue" label="MWW(Kmol/h)" align="center" />
                         <el-table-column prop="R201PDIValue" label="PDI(Kmol/h)" align="center" />
                     </el-table-column>
+                    <!-- 第三列：R202反应器 -->
                     <el-table-column prop="name" label="R202反应器" align="center" >
                         <el-table-column prop="R202MWWValue" label="MWW(Kmol/h)" align="center" />
                         <el-table-column prop="R202PDIValue" label="PDI(Kmol/h)" align="center" />
@@ -23,6 +28,8 @@
                 </el-table>
             </el-col>
         </el-row>
+
+        <!-- 下方图表 -->
         <el-row :gutter="20" >
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="24">
                 <div style="width: 50%; font-size: 22px; fontWeight: bold; margin: 1% auto;text-align:center;">
@@ -137,6 +144,7 @@ const initMWdataChart = (chartLable: number) => {
     state.charts.push(MWdataChart)
 }
 
+// 每个对象表示表格的一行
 const MwAndPdiTable = reactive([
     {
         description: '优化值',
@@ -151,6 +159,13 @@ const MwAndPdiTable = reactive([
         R201PDIValue: String(0),
         R202MWWValue: String(0),
         R202PDIValue: String(0),
+    },
+    {
+        description: '测试测试',
+        R201MWWValue: String(1),
+        R201PDIValue: String(2),
+        R202MWWValue: String(3),
+        R202PDIValue: String(4),
     },
 ])
 
@@ -205,12 +220,14 @@ const largeTable = {
     'border-radius': '14px',
 }
 
+// 设置单元格样式
 const setCellColor = ( {}:cellstyle ):CSSProperties => {
     return {fontSize: '18px', padding: '0', width: '3vh', height: '8ch', backgroundColor: '#f0f8fffb',
         fontWeight: 600,
     }
 }
 
+// 设置表格的表头样式，为不同的列设置不同的样式
 const headerStyle1 = ( {column}:cellstyle ):CSSProperties => {
     if (column?.property === 'name' || column?.property === 'description' || column?.property === 'R201PDIValue' ) {
         return {background:'#409eff', opacity: '1', height: '6ch',

@@ -1,12 +1,7 @@
-<!--
- * @Author: zwj
- * @Date: 2022-12-02 10:29:28
- * @LastEditors: zwj
- * @LastEditTime: 2022-12-28 14:47:29
- * @Description: 
--->
 <template>
+    <!-- 进料表 -->
     <div v-if="checkIOGroup.includes('进料')" class="InputTableBox">
+        <!-- R200预聚反应器进料 -->
         <el-table 
             v-if="checkGpcGroup.includes('R200')"
             :data="R200InTable" :row-style="{ height: '40px' }" :cell-style="setCellColor"
@@ -18,6 +13,7 @@
                 <el-table-column prop="unit" label="单位" align="center" />
             </el-table-column>
         </el-table>
+        <!-- R201反应器进料 -->
         <el-table 
             v-if="checkGpcGroup.includes('R201')"
             :data="R201InTable" :row-style="{ height: '60px' }" :cell-style="setCellColor"
@@ -29,6 +25,7 @@
                 <el-table-column prop="unit" label="单位" align="center" />
             </el-table-column>
         </el-table>
+        <!-- R202反应器进料 -->
         <el-table
             v-if="checkGpcGroup.includes('R202')" 
             :data="R202InTable" :row-style="{ height: '60px' }" :cell-style="setCellColor"
@@ -42,7 +39,9 @@
         </el-table>
     </div>
 
+    <!-- 出料表 -->
     <div v-if="checkIOGroup.includes('出料')" class="OutputTableBox">
+        <!-- R200预聚反应器出料 -->
         <el-table 
             v-if="checkGpcGroup.includes('R200')"
             :data="R200OutTable" :row-style="{ height: '50px' }" :cell-style="setCellColor"
@@ -53,6 +52,7 @@
                 <el-table-column prop="unit" label="单位" align="center" />
             </el-table-column>
         </el-table>
+        <!-- R201反应器出料 -->
         <el-table 
             v-if="checkGpcGroup.includes('R201')"
             :data="R201OutTable" :row-style="{ height: '50px' }" :cell-style="setCellColor"
@@ -63,6 +63,7 @@
                 <el-table-column prop="unit" label="单位" align="center" />
             </el-table-column>
         </el-table>
+        <!-- R202反应器出料 -->
         <el-table 
             v-if="checkGpcGroup.includes('R202')"
             :data="R202OutTable" :row-style="{ height: '50px' }" :cell-style="setCellColor"
@@ -265,6 +266,7 @@ const R202OutTable = reactive([
     },
 ])
 
+// 设置表格样式
 const Table = {
     width: '35%',
     'margin-left': '15px',
@@ -274,6 +276,7 @@ const Table = {
     'border-radius': '14px',
 }
 
+// 为后面字体的样式设置编写接口
 interface cellstyle {
     row: {
         property:string
@@ -285,6 +288,7 @@ interface cellstyle {
 
 const getRealTimePPData = () => {
     
+    //  cD:false  rt:true
     let postdata = {
         'dateValue': [(new Date()).toString(), (new Date()).toString()],
         'reaction': 'Option1',
@@ -293,6 +297,8 @@ const getRealTimePPData = () => {
         'chartData': false,
     }
 
+    // 0508注释掉看文件，数据的分配要结合具体的字段
+    // 这里getPPData的具体作用就是获取后端的数据并且将其赋值给表格的响应内容
     getPPData('post', postdata).then((res) => {
         console.log(res.data['PPData']);
         
@@ -316,6 +322,7 @@ const getRealTimePPData = () => {
         })
     })
 }
+
 
 // watch( () => Ippdata, () => {
 //     R200InTable.forEach((item) => {
@@ -445,6 +452,7 @@ const getRealTimePPData = () => {
 //     // 如果设置detached值为 true 时，即使所在组件被卸载，订阅依然在生效
 // )
 
+// IPP关键参数页面定时轮询 20min一次
 onMounted(() => {
     nextTick(() => {
         setInterval(() => {
@@ -453,6 +461,7 @@ onMounted(() => {
     })
 })
 
+// 设置表格中指定内容的字体样式
 const setCellColor = ( {row, column}:cellstyle ):CSSProperties => {
     if (column.property === 'value') {
         return {color: '#fa0707', 'font-weight': 'bold', 'font-size': '15px', padding: '3px 3px'}

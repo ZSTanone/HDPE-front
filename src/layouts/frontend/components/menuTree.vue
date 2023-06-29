@@ -45,5 +45,12 @@ const props = withDefaults(defineProps<Props>(), {
 }
 .el-menu-item.is-active {
     background-color: v-bind('config.getColorVal("menuActiveBackground")');
+    // background-color: rgb(219, 33, 36);
 }
+
+// 设置子菜单的背景颜色（在这里设置会让hover效果无效）
+.el-menu-item{
+    // background-color: #b6dfff;
+}
+
 </style>

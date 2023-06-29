@@ -1,0 +1,4 @@
+BaInput，FormItem 是图标选择器组件
+
+import BaInput from '/@/components/baInput/index.vue'
+import FormItem from '/@/components/formItem/index.vue'

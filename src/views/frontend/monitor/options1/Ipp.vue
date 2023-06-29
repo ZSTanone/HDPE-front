@@ -1,10 +1,3 @@
-<!--
- * @Author: zwj
- * @Date: 2022-11-14 16:00:30
- * @LastEditors: zwj
- * @LastEditTime: 2022-12-08 15:54:03
- * @Description: 
--->
 <template>
     <div class="IPPbox">
         <el-button size="small" type="success" class="FIC141" @click="changePoint('FIC141')">{{ FIC141 }}</el-button>
@@ -25,14 +18,14 @@
         <el-button size="small" type="success" class="FIC231" @click="changePoint('FIC231')">{{ FIC231 }}</el-button>
     </div>
 
-    
+
     <el-dialog v-model="dialogVisible" width="45%" draggable @open="open()" @close="close()">
         <div style="width: 100%; height: 380px;" :ref="chartRefs.set"></div>
     </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, reactive, ref, watch, toRaw, onUnmounted } from 'vue'
+import { nextTick, onMounted, reactive, ref, watch, toRaw, onUnmounted,onBeforeMount } from 'vue'
 import * as echarts from 'echarts'
 import { useIppdata } from '/@/stores/ippdata'
 import { useI18n } from 'vue-i18n'
@@ -42,66 +35,84 @@ import { storeToRefs } from 'pinia'
 
 const dialogVisible = ref(false)
 const Ippdata = useIppdata()
-const { TIC221, PIC221,FIC141,FIC111,
-    FIC121,FIC204,TIC241,PIC241,
-    FIC203,FIC201,TIC251,PIC251,
-    FIC231,FIC202 } = storeToRefs(Ippdata);
+// 将pinia状态仓库中的变量转换为响应式
+const { TIC221, PIC221, FIC141, FIC111,
+    FIC121, FIC204, TIC241, PIC241,
+    FIC203, FIC201, TIC251, PIC251,
+    FIC231, FIC202 } = storeToRefs(Ippdata);
 const { t } = useI18n()
 const chartRefs = useTemplateRefsList<HTMLDivElement>()
-let date = 1637933400*1000
-const state: {
-    point:string
-    charts: any[]
-    form: object
-    pauseWork: boolean
 
-    chartdata: []
-    postdata: object
+// 初始时间戳（单位毫秒）：换算：北京时间：2021-11-26 21:30:00
+let date = 1637933400 * 1000
+const state: {
+    point: string   // 位点
+    charts: any[]   // 保存的是图表实例
+    form: object    // 暂时没用
+    pauseWork: boolean  // 暂时没用
+
+    chartdata: []       // 历史数据
+    postdata: object    // 请求字段
 } = reactive({
     point: 'FIC141',
     charts: [],
     form: {},
     pauseWork: false,
-    chartdata:[],
+    chartdata: [],
     postdata: {
         reaction: 'Option1',
-        time: new Date(1636326000*1000).toString(),
+        time: new Date(1636326000 * 1000).toString(),   //2021-11-08 07:00:00
         full: false
     }
 })
+
+// 用于存放历史数据,画图
 const chart_data: {
     time: any[],
-    TIC221: any[],PIC221: any[],FIC141: any[],FIC111: any[],
-    FIC121: any[],FIC204: any[],TIC241: any[],PIC241: any[],
-    FIC201A: any[],FIC201B: any[],FIC201C: any[],FIC203: any[],
-    FIC201: any[],TIC251: any[],PIC251: any[],FIC202A: any[],
-    FIC202B: any[],FIC202C: any[],FIC231: any[],FIC202: any[],
+    TIC221: any[], PIC221: any[], FIC141: any[], FIC111: any[],
+    FIC121: any[], FIC204: any[], TIC241: any[], PIC241: any[],
+    FIC201A: any[], FIC201B: any[], FIC201C: any[], FIC203: any[],
+    FIC201: any[], TIC251: any[], PIC251: any[], FIC202A: any[],
+    FIC202B: any[], FIC202C: any[], FIC231: any[], FIC202: any[],
 } = {
     time: [],
-    TIC221: [],PIC221: [],FIC141: [],FIC111: [],
-    FIC121: [],FIC204: [],TIC241: [],PIC241: [],
-    FIC201A: [],FIC201B: [],FIC201C: [],FIC203: [],
-    FIC201: [],TIC251: [],PIC251: [],FIC202A: [],
-    FIC202B: [],FIC202C: [],FIC231: [],FIC202: [],
+    TIC221: [], PIC221: [], FIC141: [], FIC111: [],
+    FIC121: [], FIC204: [], TIC241: [], PIC241: [],
+    FIC201A: [], FIC201B: [], FIC201C: [], FIC203: [],
+    FIC201: [], TIC251: [], PIC251: [], FIC202A: [],
+    FIC202B: [], FIC202C: [], FIC231: [], FIC202: [],
 }
 
-let sh:any; 
+// sh就是一个变量用于存放定时器
+let sh: any;
+
+// 如果查询时间改变,清除当前定时器,创建一个新的定时器
 watch(() => Ippdata.timestamps, () => {
     clearInterval(sh);
-    sh = setInterval(()=>{
-        date += 30*60*1000
+    sh = setInterval(() => {
+        // 请求时间向后增加30min
+        date += 30 * 60 * 1000
+        // 更新请求负载
         state.postdata['time'] = new Date(date).toString()
+        
+        // 从后端获得位点数据，并使用dataFill（state）更新当前仓库的状态
         getOperationData('post', state.postdata).then((res) => {
             Ippdata.dataFill(res.data)
+            // console.log('更新数据');
         })
-    },Ippdata.timestamps)
+    }, Ippdata.timestamps)
 })
 
 watch(() => Ippdata.id, () => {
-    if(chart_data.TIC221.length < 50){
-        for(let key in Ippdata.tobject()){
-            if(key in chart_data){
-                let now:Date = new Date(+Date.parse(Ippdata.tobject().time as string))
+    // 历史数据小于50条
+    if (chart_data.TIC221.length < 50) {
+        // for in 返回的是obj中的key（这里主要针对的是那些点位）
+        for (let key in Ippdata.tobject()) {
+            // 这个if循环就是过滤出点位数据
+            if (key in chart_data) {
+                // now变量用于保存后端返回的最新数据中的时间戳（Date.parse（）就是标准时间转时间戳）
+                let now: Date = new Date(+Date.parse(Ippdata.tobject().time as string))
+                // 将数据以对象形式存入对应点位的数组
                 chart_data[key].push({
                     name: now.toString(),
                     value: [
@@ -111,11 +122,13 @@ watch(() => Ippdata.id, () => {
                 })
             }
         }
-    } else if(chart_data.TIC221.length >= 50) {
-        for(let key in Ippdata.tobject()){
-            if(key in chart_data){
+    } else if (chart_data.TIC221.length >= 50) {
+        // 如果保存的数据大于等于50条
+        for (let key in Ippdata.tobject()) {
+            if (key in chart_data) {
+                // 调用数组的shift方法，把数组的第一个元素从其中删除，其余逻辑不变
                 chart_data[key].shift();
-                let now:Date = new Date(+Date.parse(Ippdata.tobject().time as string))
+                let now: Date = new Date(+Date.parse(Ippdata.tobject().time as string))
                 chart_data[key].push({
                     name: now.toString(),
                     value: [
@@ -126,9 +139,12 @@ watch(() => Ippdata.id, () => {
             }
         }
     }
-    
+
+    // 若我们当前打开了某个点位的图表，并且恰好后端返回数据,就会进入以下逻辑对图表数据进行更新
     if (state.charts[0]) {
+        // toRaw作用是将响应式对象转换为普通的对象
         toRaw(state.charts[0]).setOption({
+            // 更新该点位的数据
             series: [
                 {
                     data: chart_data[state.point]
@@ -152,7 +168,7 @@ const initIppdataChart = () => {
                 params = params[0]
                 let time = params.value[0].toString()
                 return (
-                    time.slice(16,24) +
+                    time.slice(16, 24) +
                     ' / ' +
                     params.value[1]
                 );
@@ -187,29 +203,39 @@ const initIppdataChart = () => {
     state.charts.push(IppdataChart)
 }
 
+// 页面初始化时就是进行轮询
 onMounted(() => {
 
-    sh = setInterval(()=>{
-        date += 30*60*1000
+    sh = setInterval(() => {
+        // 30*60*1000就是半个小时
+        date += 30 * 60 * 1000
+        // 更新状态state中的时间
         state.postdata['time'] = new Date(date).toString()
+        // 向后端请求该点位当前时刻的数据
         getOperationData('post', state.postdata).then((res) => {
+            // 是将获取的最新点位数据合并到当前组件的状态对象中，并更新组件的状态
+            // 注意这些数据必须是响应式的
             Ippdata.dataFill(res.data)
+            // console.log('更新数据');
         })
     }, Ippdata.timestamps)
 })
 
-// onBeforeMount(() => {
-//     for (const key in state.charts) {
-//         state.charts[key].dispose()
-//     }
-// })
+// 在挂载前清空所有的图表实例
+onBeforeMount(() => {
+    for (const key in state.charts) {
+        state.charts[key].dispose()
+    }
+})
 
 onUnmounted(() => {
     clearInterval(sh);
 })
 
-const changePoint = (point:string) => {
+const changePoint = (point: string) => {
+    // 显示对话框
     dialogVisible.value = true
+    // 更新位点
     state.point = point
 }
 
@@ -217,12 +243,14 @@ const open = () => {
     nextTick(() => {
         //  执行echarts方法
         initIppdataChart()
+
+        console.log(chart_data);
     })
 }
 
 const close = () => {
-    // state.charts[0].dispose()
-    // state.charts.shift()
+    state.charts[0].dispose()
+    state.charts.shift()
 }
 </script>
 

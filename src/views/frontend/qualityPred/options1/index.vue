@@ -17,14 +17,14 @@
             </el-col>
             <el-col :span="1.2" style="margin-right: 10px;">
                 <el-tooltip content="最近熔指采样数据" placement="top">
-                    <el-button type="primary" @click="onClick('fun1')">
+                    <el-button type="primary" @click="onClick('fun1')" plain>
                         质量指标
                     </el-button>
                 </el-tooltip>
             </el-col>
             <el-col :span="1.2" style="margin-right: 10px;">
                 <el-tooltip content="散点图表示分子量分布" placement="top">
-                    <el-button type="primary" @click="onClick('fun2')">
+                    <el-button type="primary" @click="onClick('fun2')" plain>
                         微观结构
                     </el-button>
                 </el-tooltip>
@@ -51,12 +51,15 @@ const options = [
     },
 ]
 const devValue = ref('Option1')
-const indicatorValue = ref('fun2')
+const indicatorValue = ref('fun1')
 
 const onClick = (fun:string) => {
     indicatorValue.value = fun
     if (fun == 'fun1') {
-
+        console.log('切换到质量指标页面');
+    }
+    if (fun == 'fun2') {
+        console.log('切换到微观结构页面');
     }
 }
 

@@ -137,8 +137,9 @@ const onLogout = () => {
     align-items: center;
     height: 100%;
     margin-left: auto;
-    background-color: v-bind('configStore.getColorVal("headerBarBackground")');
+    // background-color: v-bind('configStore.getColorVal("headerBarBackground")');
     overflow: hidden;
+    // background-color: rgb(255, 255, 255);
     .nav-menu-item {
         height: 100%;
         width: 40px;

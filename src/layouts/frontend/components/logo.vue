@@ -50,6 +50,9 @@ const onMenuCollapse = function () {
     box-sizing: border-box;
     padding: 10px;
     background: v-bind('config.layout.layoutMode != "Streamline" ?  config.getColorVal("menuTopBarBackground"):"transparent"');
+    
+    // 设置logo的颜色
+    // background-color: rgb(239, 77, 218);
 }
 .logo-img {
     width: 28px;

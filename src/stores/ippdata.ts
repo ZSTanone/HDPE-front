@@ -11,8 +11,10 @@ import { Ippdata } from '/@/stores/interface'
 export const useIppdata = defineStore('Ippdata', {
     state: (): Ippdata => {
         return {
-            timeset: 10,
-            timestamps:10*1000,
+            // 默认的查询时间以及时间戳（毫秒计时 * 1000）
+            timeset: 60,
+            timestamps:60*1000,
+
             id: 0,
             time: '',
             Output_R201_MW:[],
@@ -45,9 +47,11 @@ export const useIppdata = defineStore('Ippdata', {
             state.FIC121, state.FIC204, state.TIC241, state.PIC241]
     },
     actions: {
+        // 更新当前状态
         dataFill(state: Ippdata) {
             this.$state = { ...this.$state, ...state }
         }, 
+        // 以对象形式返回当前状态
         tobject() {
             return {...this.$state}
         },

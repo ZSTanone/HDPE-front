@@ -26,5 +26,8 @@ export default defineComponent({
 .layout-header {
     height: auto;
     padding: 0;
+
+    // header设置个颜色
+    // background-color: rgb(231, 93, 132);
 }
 </style>

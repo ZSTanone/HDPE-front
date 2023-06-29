@@ -8,7 +8,9 @@
 <template>
     <el-footer class="footer">
         <div>
+            <!-- Copyright @ 2022~2023 {{ 'ZSTAN' }} {{ $t('index.copyright') }} -->
             Copyright @ 2022~2023 {{ siteConfig.site_name }} {{ $t('index.copyright') }}
+            <!-- <a href="http://beian.miit.gov.cn/">{{ 'ZSTAN' }}</a> -->
             <a href="http://beian.miit.gov.cn/">{{ siteConfig.record_number }}</a>
         </div>
     </el-footer>

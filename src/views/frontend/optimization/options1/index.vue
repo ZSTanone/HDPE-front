@@ -1,10 +1,3 @@
-<!--
- * @Description: 
- * @Author: zwj
- * @Date: 2022-10-20 14:41:56
- * @LastEditTime: 2022-10-27 11:02:05
- * @LastEditors: zwj
--->
 <template>
     <div class="default-main">
         <el-row>
@@ -18,6 +11,7 @@
         </el-row>
 
         <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
+            <!-- 插槽 -->
             <template #header>
                 <div class="card-header">
                     <el-steps :active="active" finish-status="success" align-center class="steps">
@@ -96,33 +90,48 @@ const devValue = ref('Option1')
 const gradeValue = ref('M60ET')
 
 
-
+// 默认第0步
 const active = ref(0)
+
+// upload表示表格的引用名称，是一个响应式变量，表示组件上传的实例
 const upload = ref<UploadInstance>()
+
 let uploadFlag = false
+
+// 这里修改了一部分逻辑，使得不传入文件step组件也能正常运行
 const preStep = () => {
     if (active.value-- <= 0) active.value = 0;
-    console.log(upload.value!.fileList);
+    console.log(active.value);
+    // console.log(upload.value!.fileList);
 }
 const nextStep = () => {
-    if (uploadFlag && active.value++ > 2) {
+    // if (uploadFlag && active.value++ > 2) {
+    //     active.value = 3;
+    // }
+    if (active.value++ > 2) {
         active.value = 3;
     }
+    console.log(active.value);
 }
 const clearaActive = () => {
     active.value = 0;
     uploadFlag = false;
 }
+
+// 当文件个数超过 :limit 属性的值时触发的事件。
 const handleExceed: UploadProps['onExceed'] = (files) => {
-    upload.value!.clearFiles()
-    const file = files[0] as UploadRawFile
-    file.uid = genFileId()
-    upload.value!.handleStart(file)
+    
+    upload.value!.clearFiles()  // .clearFiles() 是一个方法，作用是清空文件列表。
+    const file = files[0] as UploadRawFile  // 将files数组中的第一个文件对象转换为 UploadRawFile 类型，并将结果保存在file变量中
+    file.uid = genFileId()  //将 file 对象的 uid 属性设置为生成的文件 ID，用于标识文件。
+    upload.value!.handleStart(file) //handleStart 方法会将该文件标记为“上传中”，并且开始向服务器端发送文件数据
 }
+
+// 用于判断上传文件是否符合要求。
 const beforeUpload: UploadProps['onChange'] = (file: any) => {
-    const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+    const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1); //获取文件名的后缀名的
     const whiteList = ["xls", "xlsx", 'csv'];
-    if (whiteList.indexOf(fileSuffix) === -1) {
+    if (whiteList.indexOf(fileSuffix) === -1) {    // = -1 说明没有匹配到白名单中的文件后缀
         ElMessage.error("上传文件只能是 xls,xlsx,csv 格式");
         ElMessage.error("上传失败");
         return false;
@@ -131,15 +140,17 @@ const beforeUpload: UploadProps['onChange'] = (file: any) => {
         message: '上传成功',
         type: 'success',
     })
+    // 表示已经上传，可以进行后续步骤
     uploadFlag = true
 }
 
+// 覆盖默认的 Xhr 行为，允许自行实现上传文件的请求
 const handleRequest: UploadProps['httpRequest'] = (e:any) => {
-    const fd = new FileReader()
-    fd.readAsDataURL(e.file)
-    // 将文件转化为base64格式传入后端
+    const fd = new FileReader()  //实例化一个FileReader对象
+    fd.readAsDataURL(e.file)  //将文件传递给FileReader实例的readAsDataURL()方法，可以将文件以base64编码格式读取出来
+    // 文件读取完成后触发fd.onload事件
     fd.onload = () => {
-        uploadTargetMW('post', {file: fd.result,})
+        uploadTargetMW('post', {file: fd.result,}) //fd.result表示读取文件后的结果（这里是 base64 编码的字符串）
     }
 }
 const submitUpload = () => {

@@ -121,5 +121,6 @@ onBeforeRouteUpdate((to) => {
 }
 .el-menu-item.is-active {
     background-color: v-bind('config.getColorVal("menuActiveBackground")');
+
 }
 </style>

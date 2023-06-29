@@ -6,6 +6,7 @@
  * @Description: 
 -->
 <template>
+    <!-- 质量指标-熔指预测 -->
     <div v-show="indicatorValue === 'fun1'">
         <el-row :gutter="20" style="margin-top: 20px;">
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
@@ -15,6 +16,8 @@
             </el-col>
         </el-row>
     </div>
+
+    <!-- 微观结构分子量分布 -->
     <div v-show="indicatorValue === 'fun2'">
         <el-row justify="center" class="block">
             <el-col :span="2.9" style="margin-right: 10px;">
@@ -33,6 +36,7 @@
                 </el-tooltip>
             </el-col>
         </el-row>
+
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
                 <el-card shadow="hover" >
@@ -51,7 +55,7 @@
 <script setup lang="ts">
 import { useTemplateRefsList } from '@vueuse/core';
 import * as echarts from 'echarts'
-import { computed, nextTick, onActivated, onBeforeMount, onMounted, onUnmounted, onUpdated, ref, toRaw, watch } from 'vue';
+import { computed, nextTick, onActivated, onBeforeMount, onMounted, onUnmounted, onUpdated, ref, toRaw, watch, reactive } from 'vue';
 // import { useIppdata } from '/@/stores/ippdata'
 import { useMIData } from '/@/stores/MIdata'
 import { runPredictModel, getPPData } from '/@/api/frontend/user'
@@ -60,17 +64,27 @@ const props = defineProps<{
     indicatorValue: string
 }>()
 
-const dateValue = ref<Date>(new Date(2021, 11, 27, 10, 10))
+const dateValue = ref<Date>(new Date(2021, 10, 27, 10, 10))
 const chartRefs = useTemplateRefsList<HTMLDivElement>()
 // const Ippdata = useIppdata()
+
+// 使用熔指状态仓库
 const MIData = useMIData()
+
+// const state: {
+//     charts: any[]
+// } = {
+//     charts: [],
+// }
 
 const state: {
     charts: any[]
-} = {
+} = reactive({
     charts: [],
-}
+})
+
 let ppChart_data:any[] = [[0],[0]]
+// 熔指图表的数据
 let MIChart_data:any[] = [[],[]]
 let sh:any
 
@@ -81,7 +95,9 @@ const initMIdataChart = (chartLable:number) => {
             text: 'Ipp MI Predict',
         },
         tooltip: {
+            // 坐标轴触发
             trigger: 'axis',
+            // 提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
             formatter: function (params: any) {         
                 let date = params[0].axisValueLabel
                 
@@ -103,11 +119,13 @@ const initMIdataChart = (chartLable:number) => {
                 animation: true
             }
         },
+        // 图例的数据通常与数据系列（series）的 name 属性一一对应
         legend: {
             data: ['Predict Data', 'Real Data']
         },
         xAxis: {
             type: 'time',
+            // 分割线设置为不显示
             splitLine: {
                 show: false
             }
@@ -136,6 +154,8 @@ const initMIdataChart = (chartLable:number) => {
     state.charts.push(IppdataChart)
 }
 
+// 初始化两个分子量分布的图表，
+// 它们的chartLable（编号）不一样，数据不一样，其他都一样
 const initPPdataChart = (chartLable:number) => {
     const FulldataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
     let option = {
@@ -205,13 +225,16 @@ const initPPdataChart = (chartLable:number) => {
     state.charts.push(FulldataChart)
 }
 
+// 获取熔指的实际值与预测值
+// MI_Value依赖于MIData.getValue，只要MIData.getValue的值发生变化，MI_Value也会重新计算。
 const MI_Value = computed(() => {
-    return MIData.getValue
+    return MIData.getValue    //返回值是一个数组，数组中的每个元素都是一个对象
 })
 
 watch(
-    () => MI_Value.value,
+    () => MI_Value.value,   //这里就可视为一个响应式变量
     () => {
+        // 数据大小的保留操作
         if(MIChart_data[0].length > 50) {
             MIChart_data[0].shift(); 
         }
@@ -219,11 +242,12 @@ watch(
             MIChart_data[1].shift(); 
         }
         
+        // [0]放的是预测数据
         MIChart_data[0].push({
             name: new Date(MIData.predict.time),
             value: [
-                new Date(+Date.parse(MIData.predict.time as string)),
-                MIData.predict.value
+                new Date(+Date.parse(MIData.predict.time as string)), //时间
+                MIData.predict.value  //值
             ]
         })
         if (MIData.real.value !== null) {
@@ -236,6 +260,7 @@ watch(
             })
         }
 
+        // 更新图表中的数据的值
         toRaw(state.charts[0]).setOption({
             series: [
                 {
@@ -249,6 +274,7 @@ watch(
     }
 )
 
+// 这个侦听器用于更新图表的数据
 watch(
     () => props.indicatorValue,
     () => {
@@ -282,6 +308,7 @@ watch(
         }
     })
 
+// 更新反应器的图表数据
 const refreshPPChart = (MWData:object) => {
     ppChart_data[0] = Object.values(MWData['R201MWData'])
     ppChart_data[1] = Object.values(MWData['R202MWData'])
@@ -329,46 +356,55 @@ const echartsResize = () => {
     })
 }
 
+// 图表自适应
+// onActivated是组件被激活时执行的逻辑
 onActivated(() => {
     echartsResize()
 })
 
-onMounted(() => {
-    initMIdataChart(0)
-    initPPdataChart(1)
-    initPPdataChart(2)
-    window.addEventListener('resize', echartsResize)
-
-    let postdata = {
-        reaction: 'Option1',
-        timestamp: new Date(1637967600*1000).toString(),
-    }
-    let date = 1637967600*1000
-
-    sh = setInterval((() => {
-        date += 30*60*1000
-        postdata.timestamp = new Date(date).toString()
-        runPredictModel('post', postdata).then((res) => {
-            MIData.dataFill(res.data)
-        })
-    }), 1000*5)
-})
-
+// 加载前，清除历史“缓存”
 onBeforeMount(() => {
     for (const key in state.charts) {
         state.charts[key].dispose()
     }
 })
 
-onUnmounted(() => {
-    clearInterval(sh);
+// 初始化三个图表，定期向后端查询装置数据，注意序号对应不同的图表
+onMounted(() => {
+    initMIdataChart(0)  //熔指预测图：对应质量预测
+    initPPdataChart(1)  //R201分子量分布图：对应微观结构左图
+    initPPdataChart(2)  //R202分子量分布图：对应微观结构右图
+    window.addEventListener('resize', echartsResize)
+
+    let postdata = {
+        reaction: 'Option1',
+        timestamp: new Date(1637967600*1000).toString(), //2021-11-27 07:00:00
+    }
+    let date = 1637967600*1000
+
+    // 使用定时器向后端进行轮询：轮询时长30min
+    sh = setInterval((() => {
+        date += 30*60*1000
+        postdata.timestamp = new Date(date).toString()
+        runPredictModel('post', postdata).then((res) => {
+            MIData.dataFill(res.data)
+        })
+    }), 30*1000*60)
 })
 
+
+// 对页面进行自适应
 onUpdated(() => {
     nextTick(() => {
         echartsResize()
     })
 }) 
+
+// 清除定时器
+onUnmounted(() => {
+    clearInterval(sh);
+})
+
 </script>
 
 <style scoped lang="scss">

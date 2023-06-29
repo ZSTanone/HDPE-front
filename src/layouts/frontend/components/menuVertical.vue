@@ -73,14 +73,23 @@ onBeforeRouteUpdate((to) => {
 })
 </script>
 <style>
+
+/* 设置菜单栏颜色 */
+/* 一级菜单和底色都在这选，然后子菜单的颜色用文件的设置去调 */
+
 .vertical-menus-scrollbar {
     height: v-bind(verticalMenusScrollbarHeight);
-    background-color: v-bind('config.getColorVal("menuBackground")');
+    /* background-color: v-bind('config.getColorVal("menuBackground")'); */
+    background-color: rgb(114, 161, 215);
 }
+
 .layouts-menu-vertical {
     border: 0;
     --el-menu-bg-color: v-bind('config.getColorVal("menuBackground")');
     --el-menu-text-color: v-bind('config.getColorVal("menuColor")');
     --el-menu-active-color: v-bind('config.getColorVal("menuActiveColor")');
+
+    /* 侧边栏一级菜单 */
+    background-color: rgb(114, 161, 215);
 }
 </style>

@@ -189,6 +189,8 @@ onMounted(() => {
     margin-right: var(--ba-main-space);
     scrollbar-width: none;
 
+    // background-color: #bfa;
+
     &::-webkit-scrollbar {
         height: 5px;
     }
@@ -203,12 +205,13 @@ onMounted(() => {
     }
     &:hover {
         &::-webkit-scrollbar-thumb:hover {
-            background: #c8c9cc;
+            background: #7087ca;
         }
     }
 }
 .ba-nav-tab {
     white-space: nowrap;
     height: 40px;
+    background-color:white;
 }
 </style>

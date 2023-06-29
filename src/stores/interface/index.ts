@@ -98,6 +98,7 @@ export interface Terminal {
     port: string
 }
 
+// 网页设置的接口 用于状态仓库
 export interface SiteConfig {
     site_name: string
     record_number?: string
@@ -114,11 +115,13 @@ export interface SiteConfig {
     }
 }
 
+// Ippdata的接口 用于状态仓库
 export interface Ippdata {
     timeset: number
     timestamps: number
     id: number
     time?: string
+    // 分子量分布的数据是以数组的形式给出
     Output_R201_MW?: number[]
     Output_R202_MW?: number[]
     TIC221: number
@@ -143,13 +146,157 @@ export interface Ippdata {
     FIC202: number
 }
 
+// 熔指数据类型的接口 用于状态仓库
 export interface MIData {
     predict: {
-        'time': string
-        'value': number
+        time: string
+        value: number
     }
     real: {
-        'time': string
-        'value': number | null
+        time: string
+        value: number | null
     }
+}
+
+export interface HDPEdata {
+    timeset: number
+    timestamps: number
+    id: number
+    time?: string
+
+    FC41058: number
+    FC41053: number
+    FC41049: number
+    FC30253: number
+    FC30493: number
+    FC41048: number
+
+    FC42058: number
+    FC42053: number
+    FC42049: number
+    FC30486: number
+    FC42048: number
+
+    Yeild: number
+}
+
+export interface HDPEpara {
+    timeset: number
+    timestamps: number
+    id: number
+    time?: string
+    
+    //反应器1 
+    FC41058: number
+    FC41053: number
+    FC41049: number
+    FC30253: number
+    FC30493: number
+    FC41048: number
+
+    DI41162: number
+    PI41186: number
+    TI41164: number
+
+    FC42058: number
+    FC42053: number
+    FC42049: number
+    FC30486: number
+    FC42048: number
+
+    DI42162: number
+    PI42186: number
+    TI42164: number
+}
+
+
+// 用于保存仿真参数的状态仓库，用于仿真模拟页面
+export interface SimPara {
+    //反应器1 
+    // 乙烯  氢气  己烯  催化剂  助催化剂  新鲜异丁烷 
+    FC41058: number
+    FC41053: number
+    FC41049: number
+    FC30253: number
+    FC30493: number
+    FC41048: number
+
+    // 反应器2
+    // 乙烯  氢气  己烯  助催化剂  新鲜异丁烷 
+    FC42058: number
+    FC42053: number
+    FC42049: number
+    FC30486: number
+    FC42048: number
+
+    submit: boolean
+}
+
+
+
+// 王军的优化界面需要用到的仓库接口 6.16
+export interface PPdata {
+    timeset: number
+    timestamps: number
+    id: number
+    time?: string
+    devValue: string
+    targetProduction: {
+        '均聚物产量': number,
+        '总聚合产量': number,
+        '共聚物产量': number,
+        '总聚合乙烯含量': number,
+        '共聚乙烯含量': number,
+        'SCBaver': number, 
+    }
+    targetQuality: {
+        'Common_X': number[],
+        'R202MWD': number[],
+        'R401MWD': number[],
+        'copoMWD': number[],
+        'CCD_X': number[],
+        'CCD_Y': number[],
+    }
+    optQuality: {
+        'R202MWD': number[],
+        'R401MWD': number[],
+        'copoMWD': number[],
+        'CCD_Y': number[],
+    }
+    Production: {
+        '均聚物产量': number,
+        '总聚合产量': number,
+        '共聚物产量': number,
+        '总聚合乙烯含量': number,
+        '共聚乙烯含量': number,
+        'SCBaver': number,
+    }
+    optValue: {}
+    MWW: {},
+    PDI: {},
+    Output_R201_MW: number[]
+    Output_R202_MW: number[]
+    Output_R401_MW?:number[],
+    copo_MWD?:number[],
+    WFA?:number[],
+    TIC221: number
+    PIC221: number
+    FIC141: number
+    FIC111: number
+    FIC121: number
+    FIC204: number
+    TIC241: number
+    PIC241: number
+    FIC201A: number
+    FIC201B: number
+    FIC201C: number
+    FIC203: number
+    FIC201: number
+    TIC251: number
+    PIC251: number
+    FIC202A: number
+    FIC202B: number
+    FIC202C: number
+    FIC231: number
+    FIC202: number
 }
