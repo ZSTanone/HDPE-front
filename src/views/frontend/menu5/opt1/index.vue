@@ -146,19 +146,19 @@ const msgVisible = ref(false)
 
 // 以下定义的一写变量是用于父组件向子组件传参，即在步骤栏中进行参数的确定
 const inputSelect = reactive<{
-    R4101H2: boolean
-    R4101C2H4: boolean
-    R4101C6H12: boolean
-    R4201H2: boolean
-    R4201C2H4: boolean
-    R4201C6H12: boolean
+    R4101_H2: boolean
+    R4101_C2H4: boolean
+    R4101_C6H12: boolean
+    R4201_H2: boolean
+    R4201_C2H4: boolean
+    R4201_C6H12: boolean
 }>({
-    R4101H2: true,
-    R4101C2H4: true,
-    R4101C6H12: true,
-    R4201H2: true,
-    R4201C2H4: true,
-    R4201C6H12: true,
+    R4101_H2: true,
+    R4101_C2H4: true,
+    R4101_C6H12: true,
+    R4201_H2: true,
+    R4201_C2H4: true,
+    R4201_C6H12: true,
 })
 
 const targetSelect = reactive<{
@@ -178,31 +178,31 @@ const targetSelect = reactive<{
 const InputTableData = reactive<
     {
         description: string
-        R4101H2: string
-        R4101C2H4: string
-        R4101C6H12: string
-        R4201H2: string
-        R4201C2H4: string
-        R4201C6H12: string
+        R4101_H2: string
+        R4101_C2H4: string
+        R4101_C6H12: string
+        R4201_H2: string
+        R4201_C2H4: string
+        R4201_C6H12: string
     }[]
 >([
     {
         description: '优化上限\xa0(Kmol/h)',
-        R4101H2: '0.384',
-        R4101C2H4: '2303.3724',
-        R4101C6H12: '4627.7004',
-        R4201H2: '0.384',
-        R4201C2H4: '2303.3724',
-        R4201C6H12: '4627.7004',
+        R4101_H2: '0.384',
+        R4101_C2H4: '2303.3724',
+        R4101_C6H12: '4627.7004',
+        R4201_H2: '0.384',
+        R4201_C2H4: '2303.3724',
+        R4201_C6H12: '4627.7004',
     },
     {
         description: '优化下限\xa0(Kmol/h)',
-        R4101H2: '0.256',
-        R4101C2H4: '1535.5816',
-        R4101C6H12: '3085.1336',
-        R4201H2: '0.256',
-        R4201C2H4: '1535.5816',
-        R4201C6H12: '3085.1336',
+        R4101_H2: '0.256',
+        R4101_C2H4: '1535.5816',
+        R4101_C6H12: '3085.1336',
+        R4201_H2: '0.256',
+        R4201_C2H4: '1535.5816',
+        R4201_C6H12: '3085.1336',
     },
 ])
 
@@ -322,7 +322,7 @@ const beforeUpload: UploadProps['onChange'] = (file: any) => {
     uploadFileList.value = file
 }
 
-// 覆盖默认的 Xhr 行为，允许自行实现上传文件的请求
+// 覆盖默认的 Xhr 行为，允许自行实现上传文件的请求，上传文件的同时获取操作变量
 const handleRequest: UploadProps['httpRequest'] = (e: any) => {
     let fd = new FormData()
     fd.append('files', uploadFileList.value.raw)
@@ -347,7 +347,9 @@ const submitUpload = () => {
         ElMessage.error('优化的牌号名字不能为空')
         return false
     }
-    upload.value!.submit()
+    // upload.value!.submit()
+    let optValue = getOptValue()
+    console.log(optValue);
 }
 
 // onMounted(() => {

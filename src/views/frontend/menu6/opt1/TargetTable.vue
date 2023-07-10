@@ -85,7 +85,7 @@ let props = defineProps<{
 }>()
 
 // 做个测试看看响应式变量能不能用，是可以的
-const { tableData,targetSelect } = toRefs(props)
+const { targetSelect } = toRefs(props)
 // 
 
 interface cellstyle {

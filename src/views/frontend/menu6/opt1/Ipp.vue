@@ -1,22 +1,24 @@
 <template lang="">
     <el-card class="box-card" :body-style="{ width: '100%', padding: '0px', marginTop: '2ch',}" shadow="never">
-        
-        <el-row v-show="displayRadio==='分子量分布'" :gutter="20" style="margin-top: 4px;">
-            <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
-                <div class="chart" :ref="chartRefs.set"></div>
-            </el-col>
-            <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
-                <div class="chart" :ref="chartRefs.set"></div>
-            </el-col>
-            <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
-                <div class="chart" :ref="chartRefs.set"></div>
-            </el-col>
+        <el-row v-show="displayRadio==='分子量分布'" :gutter="20" style="margin-top: 10px;" justify="center">
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
                 <div class="chart" :ref="chartRefs.set"></div>
             </el-col>
         </el-row>
 
-        <el-row v-show="displayRadio==='数值指标'" :gutter="20" >
+        <el-row v-show="displayRadio==='分子量分布'" :gutter="20" style="margin-top: 50px;" justify="center">
+            <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="12">
+                <div class="chart" :ref="chartRefs.set"></div>
+            </el-col>
+        </el-row>
+
+        <el-row v-show="displayRadio==='熔融指数'" :gutter="20" style="margin-top: 4px;" justify="center">
+            <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="24">
+                <div class="chart" :ref="chartRefs.set"></div>
+            </el-col>
+        </el-row>
+        
+        <el-row v-show="displayRadio==='熔融指数'" :gutter="20" >
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="24">
                 <div style="width: 50%; font-size: 18px; fontWeight: bold; margin: 2px auto;text-align:center;">
                     优化前后工艺操作参数对比
@@ -27,22 +29,21 @@
                     <el-table-column prop="description" label="工艺参数" align="center" />
 
                     <el-table-column prop="name" label="R4101反应器" align="center" >
-                        <el-table-column prop="R4101_H2" label="H2" align="center" />
-                        <el-table-column prop="R4101_C2H4" label="C2H4" align="center" />
-                        <el-table-column prop="R4101_C6H12" label="C6H12" align="center" />
+                        <el-table-column prop="R4101H2" label="H2" align="center" />
+                        <el-table-column prop="R4101C2H4" label="C2H4" align="center" />
+                        <el-table-column prop="R4101C6H12" label="C6H12" align="center" />
                     </el-table-column>
 
                     <el-table-column prop="name" label="R4201反应器" align="center" >
-                        <el-table-column prop="R4201_H2" label="H2" align="center" />
-                        <el-table-column prop="R4201_C2H4" label="C2H4" align="center" />
-                        <el-table-column prop="R4201_C6H12" label="C6H12" align="center" />
+                        <el-table-column prop="R4201H2" label="H2" align="center" />
+                        <el-table-column prop="R4201C2H4" label="C2H4" align="center" />
+                        <el-table-column prop="R4201C6H12" label="C6H12" align="center" />
                     </el-table-column>
 
                 </el-table>
             </el-col>
         </el-row>
-        
-        <el-row v-show="displayRadio==='数值指标'" :gutter="20" >
+        <el-row v-show="displayRadio==='熔融指数'" :gutter="20" >
             <el-col class="lg-mb-20" :xs="24" :sm="24" :md="24" :lg="24">
                 <div style="width: 50%; font-size: 18px; fontWeight: bold; margin: 2px auto; text-align:center;">
                     优化前后产量对比
@@ -85,7 +86,7 @@ let R202MWDChart_data: any[] = [[0], [0], [0]]
 let R401MWDChart_data: any[] = [[0], [0], [0]]
 let CopoMWDChart_data: any[] = [[0], [0], [0]]
 let CCDChart_data: any[] = [[0], [0], [0]]
-let ChartTitle = ['R4101分子量分布对比图', 'R4201分子量分布对比图', 'R4101短支链分布对比图', 'R4201短支链分布对比图']
+let ChartTitle = ['旧牌号MWD曲线', '新牌号MWD曲线', '熔融指数变化图']
 
 const initMWdataChart = (chartLable: number) => {
     const MWdataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
@@ -209,21 +210,21 @@ const ProductionTable = reactive([
 const ParamsTable = reactive([
     {
         description: '优化值(Kmol/h)',
-        R4101_H2: String(0),
-        R4101_C2H4: String(0),
-        R4101_C6H12: String(0),
-        R4201_H2: String(0),
-        R4201_C2H4: String(0),
-        R4201_C6H12: String(0),
+        R4101H2: String(0),
+        R4101C2H4: String(0),
+        R4101C6H12: String(0),
+        R4201H2: String(0),
+        R4201C2H4: String(0),
+        R4201C6H12: String(0),
     },
     {
         description: '当前值(Kmol/h)',
-        R4101_H2: String(0),
-        R4101_C2H4: String(0),
-        R4101_C6H12: String(0),
-        R4201_H2: String(0),
-        R4201_C2H4: String(0),
-        R4201_C6H12: String(0),
+        R4101H2: String(0),
+        R4101C2H4: String(0),
+        R4101C6H12: String(0),
+        R4201H2: String(0),
+        R4201C2H4: String(0),
+        R4201C6H12: String(0),
     },
 ])
 
@@ -403,7 +404,6 @@ onMounted(() => {
     initMWdataChart(0)
     initMWdataChart(1)
     initMWdataChart(2)
-    initMWdataChart(3)
 })
 
 const echartsResize = () => {

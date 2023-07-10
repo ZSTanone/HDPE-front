@@ -11,61 +11,61 @@
         <el-table-column prop="description" label="工艺参数" align="center" />
 
         <el-table-column prop="name" label="R4101反应器" align="center">
-            <el-table-column prop="R4101_H2" label="H2" align="center">
+            <el-table-column prop="R4101H2" label="H2" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4101_H2" size="large" />
+                    <el-checkbox v-model="inputSelect.R4101H2" size="large" />
                     H2
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4101_H2" :disabled="!inputSelect.R4101_H2" />
+                    <el-input v-model="scope.row.R4101H2" :disabled="!inputSelect.R4101H2" />
                 </template>
             </el-table-column>
-            <el-table-column prop="R4101_C2H4" label="C2H4" align="center">
+            <el-table-column prop="R4101C2H4" label="C2H4" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4101_C2H4" size="large" />
+                    <el-checkbox v-model="inputSelect.R4101C2H4" size="large" />
                     C2H4
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4101_C2H4" :disabled="!inputSelect.R4101_C2H4" />
+                    <el-input v-model="scope.row.R4101C2H4" :disabled="!inputSelect.R4101C2H4" />
                 </template>
             </el-table-column>
-            <el-table-column prop="R4101_C6H12" label="C6H12" align="center">
+            <el-table-column prop="R4101C6H12" label="C6H12" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4101_C6H12" size="large" />
+                    <el-checkbox v-model="inputSelect.R4101C6H12" size="large" />
                     C6H12
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4101_C6H12" :disabled="!inputSelect.R4101_C6H12" />
+                    <el-input v-model="scope.row.R4101C6H12" :disabled="!inputSelect.R4101C6H12" />
                 </template>
             </el-table-column>
         </el-table-column>
 
         <el-table-column prop="name" label="R4201反应器" align="center">
-            <el-table-column prop="R4201_H2" label="H2" align="center">
+            <el-table-column prop="R4201H2" label="H2" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4201_H2" size="large" />
+                    <el-checkbox v-model="inputSelect.R4201H2" size="large" />
                     H2
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4201_H2" :disabled="!inputSelect.R4201_H2" />
+                    <el-input v-model="scope.row.R4201H2" :disabled="!inputSelect.R4201H2" />
                 </template>
             </el-table-column>
-            <el-table-column prop="R4201_C2H4" label="C2H4" align="center">
+            <el-table-column prop="R4201C2H4" label="C2H4" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4201_C2H4" size="large" />
+                    <el-checkbox v-model="inputSelect.R4201C2H4" size="large" />
                     C2H4
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4201_C2H4" :disabled="!inputSelect.R4201_C2H4" />
+                    <el-input v-model="scope.row.R4201C2H4" :disabled="!inputSelect.R4201C2H4" />
                 </template>
             </el-table-column>
-            <el-table-column prop="R4201_C6H12" label="C6H12" align="center">
+            <el-table-column prop="R4201C6H12" label="C6H12" align="center">
                 <template #header>
-                    <el-checkbox v-model="inputSelect.R4201_C6H12" size="large" />
+                    <el-checkbox v-model="inputSelect.R4201C6H12" size="large" />
                     C6H12
                 </template>
                 <template #default="scope">
-                    <el-input v-model="scope.row.R4201_C6H12" :disabled="!inputSelect.R4201_C6H12" />
+                    <el-input v-model="scope.row.R4201C6H12" :disabled="!inputSelect.R4201C6H12" />
                 </template>
             </el-table-column>
         </el-table-column>
@@ -76,27 +76,29 @@
 // import { watch } from 'fs'
 import { CSSProperties, reactive, ref, toRefs, watch } from 'vue'
 
+
 let props = defineProps<{
     tableData: {
         description: string
-        R4101_H2: string
-        R4101_C2H4: string
-        R4101_C6H12: string
-        R4201_H2: string
-        R4201_C2H4: string
-        R4201_C6H12: string
+        R4101H2: string
+        R4101C2H4: string
+        R4101C6H12: string
+        R4201H2: string
+        R4201C2H4: string
+        R4201C6H12: string
     }[]
     inputSelect: {
-        R4101_H2: boolean
-        R4101_C2H4: boolean
-        R4101_C6H12: boolean
-        R4201_H2: boolean
-        R4201_C2H4: boolean
-        R4201_C6H12: boolean
+        R4101H2: boolean
+        R4101C2H4: boolean
+        R4101C6H12: boolean
+        R4201H2: boolean
+        R4201C2H4: boolean
+        R4201C6H12: boolean
     }
 }>()
 
 const { inputSelect } = toRefs(props)
+
 
 interface cellstyle {
     row: {
@@ -128,7 +130,7 @@ const setCellColor = ({}: cellstyle): CSSProperties => {
 }
 
 const headerStyle = ({ column }: cellstyle): CSSProperties => {
-    if ((column?.property as string) === 'R4101_C2H4' || (column?.property as string) === 'R4201_C2H4') {
+    if ((column?.property as string) === 'R201H2_C3H6' || (column?.property as string) === 'R202H2_C3H6') {
         return {
             background: '#3b8eea',
             opacity: '1',
@@ -150,7 +152,12 @@ const headerStyle = ({ column }: cellstyle): CSSProperties => {
             border: '0 1px 0 0 solid',
         }
     }
-    if (column?.property === 'name' || column?.property === 'description' || (column.property as string).slice(-4) === 'C3H6') {
+    if (
+        column?.property === 'name' ||
+        column?.property === 'description' ||
+        column?.property === 'TEAL' ||
+        (column.property as string).slice(-4) === 'C3H6'
+    ) {
         return {
             background: '#3b8eea',
             opacity: '1',

@@ -36,5 +36,8 @@ export const useSimPara = defineStore('SimPara', {
         tobject() {
             return { ...this.$state }
         },
+        getPara(){
+            return { ...this.$state }
+        }
     },
 })

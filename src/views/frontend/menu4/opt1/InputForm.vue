@@ -147,7 +147,7 @@ const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, 
 
 const ruleFormRef = ref<FormInstance>()
 
-let para_array = reactive<number[]>([])
+let para_obj : { [key: string]: any } = {}
 let submit_flag : Ref<boolean> = ref(SimPara.submit)
 
 // 表单栏绑定的数值
@@ -264,13 +264,6 @@ const rules = reactive<FormRules>({
     ],
 })
 
-const getSimPara = () =>{
-    let optPara : number[] = []
-    for(let key in form){
-        optPara.push(form[key])
-    }
-    return optPara
-}
 
 // 设置防抖
 let timer: NodeJS.Timeout | null = null;
@@ -289,15 +282,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             if (valid) {
                 console.log('成功提交!');
                 ElMessage({
-                    message: '反应器数据设置成功',
+                    message: '反应数据设置成功',
                     type: 'success',
                 });
-                // console.log(form);
-                para_array = getSimPara()
+                para_obj = SimPara.getPara()
                 // flag为true表示成功提交
                 submit_flag.value = true
                 console.log(submit_flag.value)
-                console.log(para_array);
+                console.log(para_obj);
             } else {
                 console.log('error submit!', fields);
                 ElMessage.error('输入数据有误，请检查后重试');

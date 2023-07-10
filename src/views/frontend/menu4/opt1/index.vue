@@ -1,14 +1,6 @@
 <template>
     <div class="default-main">
         <el-row>
-            <!-- <el-col :span="2.9" style="margin-right: 50px;">
-                <el-tooltip content="选取聚乙烯装置" placement="top">
-                    <el-select v-model="devValue" style="width:150px" placeholder="">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                </el-tooltip>
-            </el-col> -->
-
             <el-col :span="2.9" style="margin-left: 10px;">
                 <el-tag class="ml-2" type="success" size="large">仿真设置</el-tag>
             </el-col>
@@ -25,9 +17,7 @@
         </el-row>
 
         <div v-show="radio === '工艺参数设定'">
-            <NewSim v-if="devValue === 'Option2'"></NewSim>
-            <InputForm v-if="devValue === 'Option3'"></InputForm>
-            
+            <tableIn></tableIn>
         </div>
 
         <div v-show="radio === '仿真模拟结果'">
@@ -40,23 +30,12 @@
 import { onMounted, Ref, ref, watch } from 'vue'
 import IIPPformVue from './IIPPform.vue';
 import InputForm from './InputForm.vue';
-import Sim from './SimFig.vue'
 import NewSim from './newSimFig.vue'
-import { getPPData } from '/@/api/frontend/user'
+import tableIn from './table.vue'
 
-const options = [
-    {
-        value: 'Option2',
-        label: '新仿真页面',
-    },
-    {
-        value: 'Option3',
-        label: '完整表单',
-    },
-]
 
 const radio = ref('工艺参数设定')
-const devValue = ref('Option3')
+
 
 // let timestamps: Ref<number> = ref(20)    //默认20min
 // let timestamps_flag = true
