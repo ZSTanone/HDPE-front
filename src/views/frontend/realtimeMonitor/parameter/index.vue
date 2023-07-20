@@ -117,7 +117,7 @@ watchEffect(() => {
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-    name: 'menu2/opt3',
+    name: 'realtimeMonitor/parameter',
 })
 </script>
 

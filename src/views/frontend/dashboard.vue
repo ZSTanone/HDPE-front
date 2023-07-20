@@ -14,7 +14,7 @@
             <el-button size="small" type="primary" class="FC30486 custom-button1">{{ FC30486 }}</el-button>
             <el-button size="small" type="primary" class="FC42048 custom-button1">{{ FC42048 }}</el-button>
 
-            <el-button size="large" type="primary" class="yeild">{{ Yeild }} kg/h</el-button>
+            <el-button size="large" type="primary" class="yeild">{{ Yield }} kg/h</el-button>
 
             <el-row class="timeSetter">
                 <el-col :span="2.9" style="margin-right: 10px">
@@ -30,6 +30,10 @@
                             </template>
                         </el-input>
                     </el-tooltip>
+                </el-col>
+
+                <el-col :span="2.9">
+                    <el-button @click="getData">点击更新数据（测试）</el-button>
                 </el-col>
             </el-row>
 
@@ -82,12 +86,6 @@
             </div>
         </div>
 
-        <!-- <el-dialog v-model="dialogVisible" width="45%" draggable @open="open()" @close="close()">
-            <template #header>
-                <h1 style="text-align: center">历史曲线图</h1>
-            </template>
-            <div style="width: 100%; height: 380px" :ref="chartRefs.set"></div>
-        </el-dialog> -->
     </div>
 </template>
 
@@ -97,7 +95,7 @@ import { useTemplateRefsList } from '@vueuse/core'
 import * as echarts from 'echarts'
 import { useHDPEdata } from '/@/stores/hdpedata'
 import { storeToRefs } from 'pinia'
-import { getHDPEData } from '/@/api/frontend/user/index'
+import { getHDPEData, homePage } from '/@/api/frontend/user/index'
 
 const ferqOptions = [
     {
@@ -193,7 +191,7 @@ const Mirco1 = reactive([
 
 const HDPEdata = useHDPEdata()
 // 位点数据后端保留三位小数处理
-const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yeild } = storeToRefs(HDPEdata)
+const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yield } = storeToRefs(HDPEdata)
 // const dialogVisible = ref(false)
 // const chartRefs = useTemplateRefsList<HTMLDivElement>()
 const freqValue = ref('Option2')
@@ -304,8 +302,19 @@ const headerStyle = (): CSSProperties => {
     }
 }
 
+const getData = () => {
+    getHDPEData('get').then((res) => {
+        HDPEdata.dataFill(res.data)
+        console.log('更新数据');
+    })
+}
+
 // 页面初始化时就是进行轮询
 onMounted(() => {
+    homePage('get').then((res) => {
+        console.log('访问总貌页面', res)
+    })
+
     sh = setInterval(() => {
         // 30*60*1000就是半个小时 请求数据的时间间隔为半小时
         date += 30 * 60 * 1000

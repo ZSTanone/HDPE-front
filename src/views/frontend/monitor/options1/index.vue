@@ -141,10 +141,6 @@ let timestamps: Ref<number> = ref(Ippdata.timeset)
 let timestampsischange = true
 
 watchEffect(() => {
-    // if(timestampsischange){
-    //     console.log('触发失去焦点');
-    // }
-
     if (freqValue.value === 'Option1' && timestamps.value && timestampsischange) {
         timestampsischange = false
         Ippdata.timeset = timestamps.value //改变查询时间

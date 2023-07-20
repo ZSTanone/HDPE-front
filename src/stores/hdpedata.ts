@@ -26,7 +26,7 @@ export const useHDPEdata = defineStore('HDPEdata', {
             FC30486: 1.414,
             FC42048: 50.414,
 
-            Yeild: 100.712,
+            Yield: 100.712,
         }
     },
     getters: {

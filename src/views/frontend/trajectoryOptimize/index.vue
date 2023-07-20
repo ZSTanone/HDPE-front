@@ -368,7 +368,7 @@ const showFig = () => {
 import { defineComponent } from 'vue'
 // import { Socket } from 'socket.io-client'
 export default defineComponent({
-    name: 'menu6/opt1',
+    name: 'trajectoryOptimize',
 })
 </script>
 

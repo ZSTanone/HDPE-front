@@ -63,17 +63,17 @@ watch([radio], () => {
 
 
 onMounted(() => {
-    monitorOptions2('get').then((res) => {
-
+    simulation('get').then((res) => {
+        console.log('这是仿真模拟页面',res);
     })
 })
 </script>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { monitorOptions2 } from '/@/api/frontend/user';
+import { simulation } from '/@/api/frontend/user';
 export default defineComponent({
-    name: 'monitor/options2',
+    name: 'simulation',
 })
 </script>
 

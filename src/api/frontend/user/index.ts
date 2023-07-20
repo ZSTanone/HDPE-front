@@ -83,15 +83,25 @@ export function qualityOptions1(method: 'get' | 'post', params: object = {}): Ap
 }
 
 // -----------------------------------------------------------------------------
-// 新总貌查询数据
+
+// 总貌接口
+export function homePage(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'dashboard',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+// 总貌查询数据
 export function getHDPEData(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
-        url: controllerUrl + 'menu3/opt1',
+        url: controllerUrl + 'dashboard/getHDPEData',
         data: params,
         method: method,
     }) as ApiPromise
 }
 
+// 获取反应器数据
 export function getR1Para(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
         url: controllerUrl + 'menu3/opt3/R1',
@@ -108,10 +118,19 @@ export function getR2Para(method: 'get' | 'post', params: object = {}): ApiPromi
     }) as ApiPromise
 }
 
-// 新页面的质量预测
-export function qualityOptions_new(method: 'get' | 'post', params: object = {}): ApiPromise {
+// 产品质量预测页面
+export function productPred(method: 'get' | 'post', params: object = {}): ApiPromise {
     return createAxios({
-        url: controllerUrl + 'menu3/opt1',
+        url: controllerUrl + 'productPred',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+// 产品仿真模拟页面
+export function simulation(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'simulation',
         data: params,
         method: method,
     }) as ApiPromise
@@ -125,6 +144,23 @@ export function getHdpeData(method: 'get' | 'post', params: object = {}): ApiPro
         method: method,
     }) as ApiPromise
 }
+
+//  测试的路由
+export function testApi(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'newTest/page4/testapi',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
 
 // 运行预测模型
 export function runPredictModel(method: 'get' | 'post', params: object = {}): ApiPromise {
@@ -158,6 +194,15 @@ export function uploadTargetMW(method: 'get' | 'post', params: object = {}): Api
         },
     }) as ApiPromise
 }
+
+
+
+
+
+
+
+// ---------------------------------------------------------------------------------------
+
 
 export function postProfile(params: anyObj) {
     return createAxios(

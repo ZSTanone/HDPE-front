@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { productPred } from '/@/api/frontend/user';
 import R4101 from './R4101.vue';
 import R4201 from './R4201.vue';
 
@@ -56,8 +57,8 @@ const indicator = ref('micro')
 
 
 onMounted(() => {
-    qualityOptions_new('get').then((res)=>{
-        // console.log(res);
+    productPred('get').then((res)=>{
+        console.log('产品质量预测',res);
     })
 })
 </script>
@@ -68,9 +69,8 @@ onMounted(() => {
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { qualityOptions_new } from '/@/api/frontend/user';
 export default defineComponent({
-    name: 'menu3/opt1',
+    name: 'productPred',
 })
 </script>
 

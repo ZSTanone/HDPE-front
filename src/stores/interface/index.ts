@@ -177,7 +177,7 @@ export interface HDPEdata {
     FC30486: number
     FC42048: number
 
-    Yeild: number
+    Yield: number
 }
 
 export interface HDPEpara {

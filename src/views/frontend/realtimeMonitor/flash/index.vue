@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-    name: 'menu2/opt2',
+    name: 'realtimeMonitor/flash',
 })
 </script>
 

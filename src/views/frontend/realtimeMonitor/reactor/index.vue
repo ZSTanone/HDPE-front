@@ -44,7 +44,7 @@ const devValue = ref('Option1')
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-    name: 'menu2/opt1',
+    name: 'realtimeMonitor/reactor',
 })
 </script>
 
