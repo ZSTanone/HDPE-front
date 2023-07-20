@@ -64,7 +64,6 @@
                                             <el-input
                                                 placeholder="输入进料量"
                                                 v-model="scoped.row.value"
-                                                :disabled="scoped.row.description === '催化剂'"
                                             ></el-input>
                                         </el-form-item>
                                     </template>
@@ -151,11 +150,6 @@ const form = reactive({
         {
             description: '己烯',
             value: FC42049,
-            unit: 'Kg / h',
-        },
-        {
-            description: '催化剂',
-            value: 0,
             unit: 'Kg / h',
         },
         {

@@ -60,6 +60,8 @@ const init = () => {
         res.data.userInfo.refreshToken = userInfo.refreshToken
 
         userInfo.dataFill(res.data.userInfo)
+
+        // console.log('后端返回的原始菜单',res.data.menus);
         
         // 获取用户有权限访问的资源
         if (res.data.menus) {          

@@ -18,24 +18,6 @@ const staticRoutes: Array<RouteRecordRaw> = [
         },
     },
     {
-        // 测试页
-        path: '/example',
-        name: 'example',
-        component: () => import('/@/views/frontend/example.vue'),
-        meta: {
-            title: pageTitle('example'),
-        },
-    },
-    {
-        // 新测试页
-        path: '/new',
-        name: 'newPage',
-        component: () => import('/@/views/frontend/new.vue'),
-        meta: {
-            title: pageTitle('新页面'),
-        },
-    },
-    {
         // 管理员登录页
         path: '/admin/login',
         name: 'adminLogin',

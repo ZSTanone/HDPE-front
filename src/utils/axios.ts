@@ -61,7 +61,7 @@ function createAxios(axiosConfig: AxiosRequestConfig, options: Options = {}, loa
         options
     )
 
-    // 请求拦截
+    // 请求拦截 在请求中加入token
     Axios.interceptors.request.use(
         (config) => {
             removePending(config)

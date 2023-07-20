@@ -368,7 +368,7 @@ const showFig = () => {
 import { defineComponent } from 'vue'
 // import { Socket } from 'socket.io-client'
 export default defineComponent({
-    name: 'newTest/page2',
+    name: 'menu6/opt1',
 })
 </script>
 

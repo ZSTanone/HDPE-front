@@ -83,6 +83,8 @@ export const handleMemberCenterRoute = (routes: any) => {
     addRouteAll(viewsComponent, routes, memberCenterBaseRoute.name as string)
     const menuMemberCenterBaseRoute = '/' + (memberCenterBaseRoute.name as string) + '/'
     const menuRule = handleMenuRule(routes, menuMemberCenterBaseRoute, menuMemberCenterBaseRoute)
+
+    // console.log('查看经过改写的菜单',menuRule);   //查看经过改写的菜单
     
     // 更新stores中的路由菜单数据
     const navTabs = useUserNavTabs()
@@ -119,7 +121,7 @@ export const getMenuPaths = (menus: RouteRecordRaw[]): string[] => {
 }
 
 /**
- * 菜单处理
+ * 菜单处理   前端处理后端返回的字段
  */
 const handleMenuRule = (routes: any, pathPrefix = '/', parent = '/', module = 'admin') => {
     const menuRule: RouteRecordRaw[] = []

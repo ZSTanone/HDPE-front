@@ -255,7 +255,7 @@ watch(
                 name: new Date(MIData.real.time),
                 value: [
                     new Date(+Date.parse(MIData.real.time as string)),
-                    MIData.real.value
+                    MIData.real.value   //像访问对象一样可以直接访问仓库中state的值
                 ]
             })
         }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>子页面2</h1>
+        <h1>操作轨迹优化</h1>
     </div>
 </template>
 
