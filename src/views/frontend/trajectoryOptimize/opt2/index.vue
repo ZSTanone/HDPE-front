@@ -1,13 +1,30 @@
 <template>
     <div class="default-main">
-        <el-row>
-            <el-col :span="1.2" style="margin-right: 50px">
-                <el-tooltip content="优化结果显示" placement="top">
-                    <el-radio-group v-model="displayRadio">
-                        <el-radio-button label="分子量分布" />
-                        <el-radio-button label="数值指标" />
-                    </el-radio-group>
+        <el-row style="margin-bottom: 20px" class="nav-bar">
+
+            <el-col :span="2.9" style="margin-right: 20px">
+                <el-tooltip content="查看页面" placement="top">
+                    <el-select v-model="devValue" style="width: 150px" placeholder="I套聚已烯装置">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
                 </el-tooltip>
+            </el-col>
+
+            <el-col :span="1.2" style="margin-right: 50px">
+                <el-radio-group v-model="displayRadio">
+                    <el-tooltip content="新旧牌号分子量分布对比" placement="top">
+                        <el-radio-button label="分子量分布" />
+                    </el-tooltip>
+                    <el-tooltip content="质量指标变化趋势" placement="top">
+                        <el-radio-button label="质量指标" />
+                    </el-tooltip>
+                    <el-tooltip content="优化配置比对" placement="top">
+                        <el-radio-button label="优化结果分析" />
+                    </el-tooltip>
+                    <el-tooltip content="优化配置比对" placement="top">
+                        <el-radio-button label="820组会页面" />
+                    </el-tooltip>
+                </el-radio-group>
             </el-col>
 
             <el-col :span="2.9" style="margin-right: 10px">
@@ -17,9 +34,10 @@
             </el-col>
         </el-row>
 
-        <Ipp :displayRadio="displayRadio"></Ipp>
+        <Ipp v-if="devValue === 'Option1'" :displayRadio="displayRadio"></Ipp>
+        <newResult v-if="devValue === 'Option2'" :displayRadio="displayRadio"></newResult>
 
-        <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #dcdcdc" center>
+        <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #eafaff" center>
             <template #header>
                 <h1>运行日志</h1>
             </template>
@@ -34,16 +52,34 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, inject, onMounted, watch } from 'vue'
 import { ElMessage, genFileId, UploadProps } from 'element-plus'
+import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
 import Ipp from './Ipp.vue'
+import newResult from './newResult.vue' 
 import { usePPdata } from '/@/stores/PPdata'
+
+
+const options = [
+    {
+        value: 'Option1',
+        label: '旧页面',
+    },
+    {
+        value: 'Option2',
+        label: '新页面',
+    },
+]
+
+const devValue = ref('Option2')
 
 // const socket: Socket = inject("socket") as Socket;
 const Ippdata = usePPdata()
 
-const displayRadio = ref('分子量分布')
+// 牌号
+
+const displayRadio = ref('优化结果分析')
 const msgVisible = ref(false)
 
 
@@ -54,10 +90,6 @@ const msgData = reactive<
         message: string
     }[]
 >([])
-
-
-
-
 
 
 
@@ -100,9 +132,10 @@ const msgData = reactive<
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import newResultVue from './newResult.vue'
 // import { Socket } from 'socket.io-client'
 export default defineComponent({
-    name: 'OptResult',
+    name: 'trajectoryOptimize',
 })
 </script>
 
@@ -114,8 +147,6 @@ export default defineComponent({
     align-items: center;
     width: 100%;
     max-width: 100%;
-    background-color: var(--ba-bg-color-overlay);
-    border: 1px solid var(--ba-border-color);
     border-bottom: none;
     padding: 13px 15px;
     font-size: 14px;
@@ -129,6 +160,28 @@ export default defineComponent({
     border-radius: 4px;
 }
 
+.nav-bar {
+    background-color: white;
+}
+
+.box-card {
+    widows: 100%;
+    margin-top: 0px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: rgb(130, 45, 11);
+    line-height: 100%;
+}
+
+:deep(.el-card__header) {
+    border-bottom: none;
+}
+
 .TableTitle {
     width: 20%;
     height: 2rem;
@@ -140,6 +193,26 @@ export default defineComponent({
     color: #3b8eea;
 }
 
+.box {
+    padding: 0 10px;
+    overflow: hidden;
+    border: none;
+}
+
+.left {
+    float: left;
+    width: 200px;
+    height: 600px;
+}
+.right {
+    margin-left: 210px;
+    height: 600px;
+}
+
+.btn-row {
+    margin: 20px 0;
+    // border: none;
+}
 
 .chart {
     margin-top: 0px;
@@ -148,6 +221,15 @@ export default defineComponent({
     background-color: aquamarine;
 }
 
+.labelFont {
+    font-size: 18px;
+    color: red;
+}
+
+.gradeSelect {
+    width: 17%;
+    margin: 10px 18px;
+}
 
 .msgCard {
     width: 520px;
@@ -155,6 +237,5 @@ export default defineComponent({
     border-radius: 1ch;
 
     margin: 0 auto;
-
 }
 </style>

@@ -3,23 +3,15 @@
         <el-row>
             <el-col>
                 <el-card class="cardbox" shadow="never">
-                    <el-row :gutter="20" class="header" align="middle">
+                    <el-row :gutter="40" class="header" align="middle" justify="center">
                         <el-col :span="2.5"> 当前生产牌号 </el-col>
 
                         <el-col :span="2.5">
-                            <el-button text bg plain :type="'warning'">{{ gradeNow }}</el-button>
+                            <el-button :type="'warning'">{{ gradeNow }}</el-button>
                         </el-col>
-
-                        <!-- <el-col :span="2.5">
-                            <el-button @click="change2">牌号换2</el-button>
-                        </el-col>
-
-                        <el-col :span="2.5">
-                            <el-button @click="change3">牌号换3</el-button>
-                        </el-col> -->
                     </el-row>
 
-                    <el-row>
+                    <el-row justify="center">
                         <el-table :data="gradeNowTable" :style="Table" :header-cell-style="headerStyle()">
                             <el-table-column prop="reactor" label="反应器" />
                             <el-table-column prop="HoverM" label="氢气-乙烯比" />
@@ -34,11 +26,11 @@
         <el-row>
             <el-col>
                 <el-card class="cardbox" shadow="never">
-                    <el-row :gutter="20" class="header" align="middle">
+                    <el-row :gutter="20" class="header" align="middle" justify="center">
                         <el-col :span="2.5"> <span style="color: rgb(255, 0, 0)">目标生产牌号</span> </el-col>
 
                         <el-col :span="2.5">
-                            <el-button text bg plain :type="'warning'">{{ targetGrade }}</el-button>
+                            <el-button :type="'warning'">{{ targetGrade }}</el-button>
                         </el-col>
 
                         <el-col :span="1"></el-col>
@@ -52,7 +44,7 @@
                         </el-col>
                     </el-row>
 
-                    <el-row>
+                    <el-row justify="center">
                         <el-table :data="targetGradeTable" :style="Table" :header-cell-style="headerStyle()">
                             <el-table-column prop="reactor" label="反应器" />
                             <el-table-column prop="HoverM" label="氢气-乙烯比" />
@@ -146,12 +138,12 @@ const Table = {
 
 <style scoped lang="scss">
 .wrapper {
-    background-color: azure;
-    height: 600px;
+    height: 550px;
 }
 
 .cardbox {
-    margin: 20px 10px;
+    margin: 20px auto;
+    width: 80%;
 }
 
 .header {

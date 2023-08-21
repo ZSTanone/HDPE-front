@@ -155,6 +155,17 @@ export function testApi(method: 'get' | 'post', params: object = {}): ApiPromise
 }
 
 
+//  测试的路由
+export function gradeResult(method: 'get' | 'post', params: object = {}): ApiPromise {
+    return createAxios({
+        url: controllerUrl + 'trajectoryOptimize/opt1/gradeResult',
+        data: params,
+        method: method,
+    }) as ApiPromise
+}
+
+
+
 
 
 

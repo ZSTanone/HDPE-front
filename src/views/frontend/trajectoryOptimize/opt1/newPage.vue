@@ -1,87 +1,46 @@
 <template>
     <div class="default-main">
-        <el-row style="margin-bottom: 20px" class="nav-bar">
-            <el-col :span="2.9" style="margin: 0px 20px">
-                <el-tooltip content="详细设置牌号切换参数" placement="top">
-                    <el-button type="primary" @click="dialogVisible = true"> 牌号切换设置 </el-button>
-                </el-tooltip>
-            </el-col>
-
-            <el-col :span="1.2" style="margin-right: 50px">
-                <el-radio-group v-model="displayRadio">
-                    <el-tooltip content="新旧牌号分子量分布对比" placement="top">
-                        <el-radio-button label="分子量分布" />
-                    </el-tooltip>
-                    <el-tooltip content="切换过程累计熔指变化情况" placement="top">
-                        <el-radio-button label="熔融指数" />
-                    </el-tooltip>
-                </el-radio-group>
-            </el-col>
-
-            <el-col :span="2.9" style="margin-right: 10px">
-                <el-tooltip content="运行日志" placement="top">
-                    <el-button type="success" plain @click="msgVisible = true"> 显示运行日志 </el-button>
-                </el-tooltip>
-            </el-col>
-        </el-row>
-
-        <el-dialog v-model="dialogVisible" title="牌号切换设置" width="60%" draggable style="border-radius: 1ch">
-            <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
-                <template #header>
-                    <div class="card-header">{{ optValue }}</div>
-                </template>
-
-                <div class="box">
-                    <div class="left">
-                        <el-row class="btn-row" align="middle" style="margin-top: 100px">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt1">选择优化牌号</el-button>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="btn-row" align="middle">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt2">切换变量约束</el-button>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="btn-row" align="middle">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt3">切换优化运行</el-button>
-                            </el-col>
-                        </el-row>
-                    </div>
-
-                    <div class="right">
-                        <GradeTrans
-                            v-model:targetGrade="targetGrade"
-                            :gradeNow="gradeNow"
-                            :grade-now-table="gradeNowTable"
-                            :target-grade-table="targetGradeTable"
-                            @update:targetGrade="handleTargetGradeUpdate"
-                            v-if="optValue === '牌号选择'"
-                        ></GradeTrans>
-                        <paraConstrain v-if="optValue === '变量约束'" v-model:inputSelect="inputSelect" :table-data="InputTableData"></paraConstrain>
-                        <optProsess v-if="optValue === '优化过程'"></optProsess>
-                    </div>
-                </div>
-            </el-card>
-            <el-button type="success" plain style="margin-left: 86%; margin-top: 1%" @click="showFig">完成配置</el-button>
-        </el-dialog>
-
-        <Ipp v-if="devValue === 'Option1'" :displayRadio="displayRadio"></Ipp>
-
-        <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #eafaff" center>
+        <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
             <template #header>
-                <h1>运行日志</h1>
+                <div class="card-header">{{ optValue }}</div>
             </template>
-            <el-card class="msgCard" :body-style="{ padding: '0px' }" shadow="never">
-                <el-table :data="msgData" height="300" style="width: auto">
-                    <el-table-column prop="date" label="Date" width="220" align="center" />
-                    <el-table-column prop="message" label="Message" width="300" align="center" />
-                </el-table>
-            </el-card>
-        </el-dialog>
+
+            <div class="box">
+                <div class="left">
+                    <el-row class="btn-row" align="middle" style="margin-top: 100px">
+                        <el-col>
+                            <el-button :type="'primary'" plain @click="showOpt1">选择优化牌号</el-button>
+                        </el-col>
+                    </el-row>
+
+                    <el-row class="btn-row" align="middle">
+                        <el-col>
+                            <el-button :type="'primary'" plain @click="showOpt2">切换变量约束</el-button>
+                        </el-col>
+                    </el-row>
+
+                    <el-row class="btn-row" align="middle">
+                        <el-col>
+                            <el-button :type="'primary'" plain @click="showOpt3">切换优化运行</el-button>
+                        </el-col>
+                    </el-row>
+                </div>
+
+                <div class="right">
+                    <GradeTrans
+                        v-model:targetGrade="targetGrade"
+                        :gradeNow="gradeNow"
+                        :grade-now-table="gradeNowTable"
+                        :target-grade-table="targetGradeTable"
+                        @update:targetGrade="handleTargetGradeUpdate"
+                        v-if="optValue === '牌号选择'"
+                    ></GradeTrans>
+                    <paraConstrain v-if="optValue === '变量约束'" v-model:inputSelect="inputSelect" :table-data="InputTableData"></paraConstrain>
+                    <optProsess v-if="optValue === '优化过程'"></optProsess>
+                </div>
+            </div>
+        </el-card>
+        <el-button type="success" plain style="margin-left: 86%; margin-top: 1%" @click="showFig">完成配置</el-button>
     </div>
 </template>
 
@@ -90,11 +49,7 @@ import { reactive, ref, inject, onMounted, watch } from 'vue'
 import { ElMessage, genFileId, UploadProps } from 'element-plus'
 import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
-import Ipp from './Ipp.vue'
-import InputTable from './InputTable.vue'
-import TargetTable from './TargetTable.vue'
 import { usePPdata } from '/@/stores/PPdata'
-
 import GradeTrans from './gradeTrans.vue'
 import paraConstrain from './paraConstrain.vue'
 import optProsess from './optProcess.vue'
@@ -102,15 +57,9 @@ import optProsess from './optProcess.vue'
 // const socket: Socket = inject("socket") as Socket;
 const Ippdata = usePPdata()
 
-const dialogVisible = ref(false)
 let optValue = ref('牌号选择')
-const devValue = ref('Option1')
 
 // 牌号
-const gradeValue = ref('M26ET')
-
-const displayRadio = ref('熔融指数')
-const msgVisible = ref(false)
 
 // 牌号选择-父子组件传参
 const gradeNow = ref('牌号1')
@@ -263,13 +212,6 @@ const InputTableData = reactive<
 ])
 
 // 日志框中的信息
-const msgData = reactive<
-    {
-        date: string
-        message: string
-    }[]
->([])
-
 const showOpt1 = () => {
     optValue.value = '牌号选择'
 }

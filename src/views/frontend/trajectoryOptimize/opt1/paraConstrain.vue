@@ -174,7 +174,6 @@ const headerStyle = ({ column }: cellstyle): CSSProperties => {
 
 <style scoped lang="scss">
 .wrapper {
-    background-color: azure;
     height: 600px;
     display: flex;
     justify-content: center;

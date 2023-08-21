@@ -8,13 +8,13 @@
                     </el-select>
                 </el-tooltip>
             </el-col>
-            <el-col :span="2.9" style="margin-right: 30px">
+            <el-col :span="2.9" style="margin-right: 30px" v-show="devValue === 'Option1'">
                 <el-tooltip content="配置参数" placement="top">
                     <el-button type="primary" @click="dialogVisible = true"> 配置参数 </el-button>
                 </el-tooltip>
             </el-col>
 
-            <el-col :span="1.2" style="margin-right: 50px">
+            <el-col :span="1.2" style="margin-right: 50px" v-show="devValue === 'Option1'">
                 <el-tooltip content="优化结果显示" placement="top">
                     <el-radio-group v-model="displayRadio">
                         <el-radio-button label="分子量分布" />
@@ -23,7 +23,7 @@
                 </el-tooltip>
             </el-col>
 
-            <el-col :span="2.9" style="margin-right: 10px">
+            <el-col :span="2.9" style="margin-right: 10px" v-show="devValue === 'Option1'">
                 <el-tooltip content="运行日志" placement="top">
                     <el-button type="success" plain @click="msgVisible = true"> 显示运行日志 </el-button>
                 </el-tooltip>
@@ -98,6 +98,7 @@
         </el-dialog>
 
         <Ipp v-if="devValue === 'Option1'" :displayRadio="displayRadio"></Ipp>
+        <newPage v-if="devValue === 'Option2'"></newPage>
 
         <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #eafaff" center>
             <template #header>
@@ -119,6 +120,7 @@ import { ElMessage, genFileId, UploadProps } from 'element-plus'
 import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
 import Ipp from './Ipp.vue'
+import newPage from './newPage.vue'
 import InputTable from './InputTable.vue'
 import TargetTable from './TargetTable.vue'
 import { usePPdata } from '/@/stores/PPdata'
@@ -129,16 +131,16 @@ const Ippdata = usePPdata()
 const options = [
     {
         value: 'Option1',
-        label: 'I套聚丙烯装置',
+        label: '旧页面',
     },
     {
         value: 'Option2',
-        label: 'II套聚丙烯装置',
+        label: '新页面',
     },
 ]
 
 const dialogVisible = ref(false)
-const devValue = ref('Option1')
+const devValue = ref('Option2')
 const gradeValue = ref('M26ET')
 
 const displayRadio = ref('分子量分布')

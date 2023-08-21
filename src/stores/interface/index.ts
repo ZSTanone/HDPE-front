@@ -162,7 +162,7 @@ export interface HDPEdata {
     timeset: number
     timestamps: number
     id: number
-    time?: string
+    time: string
 
     FC41058: number
     FC41053: number
@@ -185,8 +185,8 @@ export interface HDPEpara {
     timestamps: number
     id: number
     time?: string
-    
-    //反应器1 
+
+    //反应器1
     FC41058: number
     FC41053: number
     FC41049: number
@@ -209,11 +209,10 @@ export interface HDPEpara {
     TI42164: number
 }
 
-
 // 用于保存仿真参数的状态仓库，用于仿真模拟页面
 export interface SimPara {
-    //反应器1 
-    // 乙烯  氢气  己烯  催化剂  助催化剂  新鲜异丁烷 
+    //反应器1
+    // 乙烯  氢气  己烯  催化剂  助催化剂  新鲜异丁烷
     FC41058: number
     FC41053: number
     FC41049: number
@@ -222,7 +221,7 @@ export interface SimPara {
     FC41048: number
 
     // 反应器2
-    // 乙烯  氢气  己烯  助催化剂  新鲜异丁烷 
+    // 乙烯  氢气  己烯  助催化剂  新鲜异丁烷
     FC42058: number
     FC42053: number
     FC42049: number
@@ -232,9 +231,40 @@ export interface SimPara {
     submit: boolean
 }
 
+// 高压闪蒸页面的参数
+export interface Flash {
+    // 数据标识
+    id: number
+    time?: string
 
+    // 表格中的
+    AI431581: number
+    AI431581A: number
+    AI431582: number
+    AI431582A: number
+    AI431583: number
+    AI431583A: number
+    AI431584: number
+    AI431584A: number
+    AI431585: number
+    AI431585A: number
+    AI431586: number
+    AI431586A: number
+    h2c2: number
+
+    // 其余的
+    PI43155: number
+    TI43161A: number
+    LZI43166A: number
+    TI43156: number
+    LZI43166B: number
+    TI43152: number
+    PI43153: number
+    AI43157: number
+}
 
 // 王军的优化界面需要用到的仓库接口 6.16
+
 export interface PPdata {
     timeset: number
     timestamps: number
@@ -242,43 +272,43 @@ export interface PPdata {
     time?: string
     devValue: string
     targetProduction: {
-        '均聚物产量': number,
-        '总聚合产量': number,
-        '共聚物产量': number,
-        '总聚合乙烯含量': number,
-        '共聚乙烯含量': number,
-        'SCBaver': number, 
+        均聚物产量: number
+        总聚合产量: number
+        共聚物产量: number
+        总聚合乙烯含量: number
+        共聚乙烯含量: number
+        SCBaver: number
     }
     targetQuality: {
-        'Common_X': number[],
-        'R202MWD': number[],
-        'R401MWD': number[],
-        'copoMWD': number[],
-        'CCD_X': number[],
-        'CCD_Y': number[],
+        Common_X: number[]
+        R202MWD: number[]
+        R401MWD: number[]
+        copoMWD: number[]
+        CCD_X: number[]
+        CCD_Y: number[]
     }
     optQuality: {
-        'R202MWD': number[],
-        'R401MWD': number[],
-        'copoMWD': number[],
-        'CCD_Y': number[],
+        R202MWD: number[]
+        R401MWD: number[]
+        copoMWD: number[]
+        CCD_Y: number[]
     }
     Production: {
-        '均聚物产量': number,
-        '总聚合产量': number,
-        '共聚物产量': number,
-        '总聚合乙烯含量': number,
-        '共聚乙烯含量': number,
-        'SCBaver': number,
+        均聚物产量: number
+        总聚合产量: number
+        共聚物产量: number
+        总聚合乙烯含量: number
+        共聚乙烯含量: number
+        SCBaver: number
     }
     optValue: {}
-    MWW: {},
-    PDI: {},
+    MWW: {}
+    PDI: {}
     Output_R201_MW: number[]
     Output_R202_MW: number[]
-    Output_R401_MW?:number[],
-    copo_MWD?:number[],
-    WFA?:number[],
+    Output_R401_MW?: number[]
+    copo_MWD?: number[]
+    WFA?: number[]
     TIC221: number
     PIC221: number
     FIC141: number

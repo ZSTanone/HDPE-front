@@ -16,6 +16,13 @@
 
             <el-button size="large" type="primary" class="yeild">{{ Yield }} kg/h</el-button>
 
+            <!-- <el-button class="date">{{ time }}</el-button> -->
+
+            <el-card class="date" shadow="never">
+                <h1 style="color: rgb(185, 71, 0); margin-bottom: 5px;">当前时刻</h1>
+                <h1>{{time}}</h1>
+            </el-card>
+
             <el-row class="timeSetter">
                 <el-col :span="2.9" style="margin-right: 10px">
                     <el-tag class="ml-2" size="large" effect="dark">设置查询频率</el-tag>
@@ -191,7 +198,7 @@ const Mirco1 = reactive([
 
 const HDPEdata = useHDPEdata()
 // 位点数据后端保留三位小数处理
-const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yield } = storeToRefs(HDPEdata)
+const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yield, time} = storeToRefs(HDPEdata)
 // const dialogVisible = ref(false)
 // const chartRefs = useTemplateRefsList<HTMLDivElement>()
 const freqValue = ref('Option2')
@@ -218,6 +225,8 @@ const state: {
     },
 })
 
+// const dateObj = new Date(time.value);
+// const showDate = reactive({formattedDate: `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, "0")}-${dateObj.getDate().toString().padStart(2, "0")} ${dateObj.getHours().toString().padStart(2, "0")}:${dateObj.getMinutes().toString().padStart(2, "0")}:${dateObj.getSeconds().toString().padStart(2, "0")}`,})
 // 监听查询频率的变化
 watchEffect(() => {
     if (freqValue.value === 'Option1' && timestamps.value && timestampsischange) {
@@ -375,6 +384,18 @@ export default defineComponent({
         font-weight: bold;
         border: none;
         font-size: 0.8vw;
+    }
+
+    .date{
+        position: absolute;
+        top: 0.5 * 5vw;
+        left: 9 * 5vw;
+        width: 280px;
+        height: 80px;
+        text-align: center;
+        
+
+        background-color: #72a1d76a;
     }
 
     .box1 {

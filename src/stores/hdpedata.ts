@@ -11,7 +11,7 @@ export const useHDPEdata = defineStore('HDPEdata', {
             timestamps: 60 * 1000,
 
             id: 0,
-            time: '',
+            time: '0',
 
             FC41058: 3.141,
             FC41053: 3.141,
