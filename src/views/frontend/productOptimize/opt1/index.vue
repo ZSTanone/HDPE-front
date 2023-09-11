@@ -1,105 +1,6 @@
 <template>
     <div class="default-main">
-        <el-row>
-            <el-col :span="2.9" style="margin-right: 20px">
-                <el-tooltip content="选取聚乙烯装置" placement="top">
-                    <el-select v-model="devValue" style="width: 150px" placeholder="I套聚已烯装置">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                </el-tooltip>
-            </el-col>
-            <el-col :span="2.9" style="margin-right: 30px" v-show="devValue === 'Option1'">
-                <el-tooltip content="配置参数" placement="top">
-                    <el-button type="primary" @click="dialogVisible = true"> 配置参数 </el-button>
-                </el-tooltip>
-            </el-col>
-
-            <el-col :span="1.2" style="margin-right: 50px" v-show="devValue === 'Option1'">
-                <el-tooltip content="优化结果显示" placement="top">
-                    <el-radio-group v-model="displayRadio">
-                        <el-radio-button label="分子量分布" />
-                        <el-radio-button label="数值指标" />
-                    </el-radio-group>
-                </el-tooltip>
-            </el-col>
-
-            <el-col :span="2.9" style="margin-right: 10px" v-show="devValue === 'Option1'">
-                <el-tooltip content="运行日志" placement="top">
-                    <el-button type="success" plain @click="msgVisible = true"> 显示运行日志 </el-button>
-                </el-tooltip>
-            </el-col>
-        </el-row>
-
-        <el-dialog v-model="dialogVisible" title="配置参数" width="70%" draggable style="border-radius: 1ch">
-            <!-- 这里在dialog组件内包裹了一个card组件 -->
-            <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="hover">
-                <!-- 在card组件的header插槽中加入步骤条组件 -->
-                <template #header>
-                    <div class="card-header">
-                        <el-steps :active="active" finish-status="success" align-center class="steps">
-                            <el-step title="上传文件"></el-step>
-                            <el-step title="选择优化参数"></el-step>
-                            <el-step title="选择优化指标"></el-step>
-                        </el-steps>
-
-                        <el-button type="success" size="large" round @click="preStep">上一步</el-button>
-                        <el-button type="success" size="large" round @click="nextStep">下一步</el-button>
-                    </div>
-                </template>
-
-                <!-- 这部分相当于主内容区，通过既定的步骤进行文件上传，参数限制等操作 -->
-                <div class="item">
-                    <!-- 第一步 使用upload组件上传文件 -->
-                    <el-upload
-                        ref="upload"
-                        v-show="active === 0"
-                        drag
-                        :on-exceed="handleExceed"
-                        action=""
-                        :http-request="handleRequest"
-                        :limit="1"
-                        :on-change="beforeUpload"
-                        :auto-upload="false"
-                        accept=".csv"
-                    >
-                        <div class="TableTitle">优化分布质量指标文件上传</div>
-                        <Icon name="el-icon-UploadFilled" size="60" />
-                        <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
-                    </el-upload>
-
-                    <!-- 第二步 确定优化的质量指标 + 优化的牌号  这是优化的目标-->
-                    <div v-if="active === 1" style="display: flex; flex-direction: column; line-height: 100%; margin: 1ch 2%">
-                        <el-select class="gradeSelect" v-model="gradeValue" placeholder="请选择你想优化的牌号">
-                            <el-option label="M30RH" value="M30RH" />
-                            <el-option label="M26ET" value="M26ET" />
-                            <el-option label="Y26" value="Y26" />
-                        </el-select>
-
-                        <div>
-                            <div class="TableTitle">优化数值质量指标输入</div>
-                            <TargetTable v-model:targetSelect="targetSelect" :table-data="TargetTableData" />
-                        </div>
-                    </div>
-
-                    <!-- 第三步 确定各个优化变量的上下限 + 提交运行 这是优化的变量，操作值 -->
-                    <div v-if="active === 2" style="width: 98%; margin: 1ch 0">
-                        <div>
-                            <div class="TableTitle">工艺参数输入</div>
-                            <InputTable v-model:inputSelect="inputSelect" :table-data="InputTableData" />
-                        </div>
-                        <el-button style="width: 10%; margin: 3ch 0 0ch 90%" type="success" size="large" @click="submitUpload">完成配置</el-button>
-                    </div>
-
-                    <div v-show="active === 3" style="width: 10%; margin: 0 45%">
-                        <el-button style="width: 100%,margin: auto;" type="success" size="large" @click="clearaActive"> 回到第一步 </el-button>
-                    </div>
-                </div>
-            </el-card>
-        </el-dialog>
-
-        <Ipp v-if="devValue === 'Option1'" :displayRadio="displayRadio"></Ipp>
-        <newPage v-if="devValue === 'Option2'"></newPage>
-
+        <newPage></newPage>
         <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #eafaff" center>
             <template #header>
                 <h1>运行日志</h1>
@@ -119,25 +20,12 @@ import { reactive, ref, inject, onMounted } from 'vue'
 import { ElMessage, genFileId, UploadProps } from 'element-plus'
 import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
-import Ipp from './Ipp.vue'
 import newPage from './newPage.vue'
-import InputTable from './InputTable.vue'
-import TargetTable from './TargetTable.vue'
 import { usePPdata } from '/@/stores/PPdata'
 
 // const socket: Socket = inject("socket") as Socket;
 const Ippdata = usePPdata()
 
-const options = [
-    {
-        value: 'Option1',
-        label: '旧页面',
-    },
-    {
-        value: 'Option2',
-        label: '新页面',
-    },
-]
 
 const dialogVisible = ref(false)
 const devValue = ref('Option2')

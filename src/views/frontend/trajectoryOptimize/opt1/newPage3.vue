@@ -96,6 +96,7 @@ const info = ref<Array<any>>([])
 // 加载
 const loading =ref(false)
 
+
 // 牌号
 // 牌号选择-父子组件传参
 const gradeNow = ref('牌号1')
@@ -228,21 +229,21 @@ const InputTableData = reactive<
 >([
     {
         description: '优化上限\xa0(Kmol/h)',
-        R4101_H2: '0.3',
-        R4101_C2H4: '2303',
-        R4101_C6H12: '4627',
-        R4201_H2: '0.3',
-        R4201_C2H4: '2303',
-        R4201_C6H12: '4627',
+        R4101_H2: '10',
+        R4101_C2H4: '20',
+        R4101_C6H12: '30',
+        R4201_H2: '40',
+        R4201_C2H4: '50',
+        R4201_C6H12: '60',
     },
     {
         description: '优化下限\xa0(Kmol/h)',
-        R4101_H2: '0.2',
-        R4101_C2H4: '1535',
-        R4101_C6H12: '3085',
-        R4201_H2: '0.2',
-        R4201_C2H4: '1535',
-        R4201_C6H12: '3085',
+        R4101_H2: '1',
+        R4101_C2H4: '2',
+        R4101_C6H12: '3',
+        R4201_H2: '4',
+        R4201_C2H4: '5',
+        R4201_C6H12: '6',
     },
 ])
 
@@ -250,19 +251,12 @@ const InputTableData = reactive<
 const getOptPara = () => {
     let oldGrade: string = gradeNow.value
     let newGrade: string = targetGrade.value
-    // let oldPara = []
-    // let newPara: string[] = []
 
     let optVariableInput: string[] = []
 
     let optLb: string[] = []
     let optUb: string[] = []
 
-    // for (let i = 0; i < gradeNowTable.length; i++) {
-    //     for (let key in gradeNowTable[i]) {
-    //         oldPara.push(gradeNowTable[i][key])
-    //     }
-    // }
 
     for (let key in inputSelect) {
         if (inputSelect[key]) {
@@ -275,8 +269,6 @@ const getOptPara = () => {
     return {
         oldGrade,
         newGrade,
-        // oldPara,
-        // newPara,
         optVariableInput,
         optLb,
         optUb,
@@ -296,7 +288,7 @@ const preStep = () => {
 }
 // 下一步
 const nextStep = () => {
-    console.log(active.value)
+    // console.log(active.value)
     if (uploadFlag && active.value++ > 2) {
         active.value = 3
     }
@@ -357,10 +349,9 @@ const submitUpload = () => {
     }
 
     loading.value = true
-
-    // upload.value!.submit()
     let setting = getOptPara()
-    // setting['result'] = [1,2,3,4,5]
+
+    
 
     // // 在这里调用接口拿到后端返回的数据（熔指），存进info 写入sessionStorage
     gradeResult('post', setting).then((res) => {
@@ -368,8 +359,9 @@ const submitUpload = () => {
             ElMessage.success('轨迹调优运行完毕')
             setting['result'] = res.data.data
             setting['updateTime'] = res.time
+            setting['res'] = res.data.res
+            setting['setting'] = res.data.setting
 
-            // 设置为只能存储四个历史数据
             if (info.value.length < 2) {
                 info.value.push(setting)
             } else {

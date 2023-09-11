@@ -2,14 +2,6 @@
     <div class="default-main">
         <el-row style="margin-bottom: 20px" class="nav-bar">
 
-            <el-col :span="2.9" style="margin-right: 20px">
-                <el-tooltip content="查看页面" placement="top">
-                    <el-select v-model="devValue" style="width: 150px" placeholder="I套聚已烯装置">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                </el-tooltip>
-            </el-col>
-
             <el-col :span="1.2" style="margin-right: 50px">
                 <el-radio-group v-model="displayRadio">
                     <el-tooltip content="新旧牌号分子量分布对比" placement="top">
@@ -21,9 +13,6 @@
                     <el-tooltip content="优化配置比对" placement="top">
                         <el-radio-button label="优化结果分析" />
                     </el-tooltip>
-                    <el-tooltip content="优化配置比对" placement="top">
-                        <el-radio-button label="820组会页面" />
-                    </el-tooltip>
                 </el-radio-group>
             </el-col>
 
@@ -34,8 +23,7 @@
             </el-col>
         </el-row>
 
-        <Ipp v-if="devValue === 'Option1'" :displayRadio="displayRadio"></Ipp>
-        <newResult v-if="devValue === 'Option2'" :displayRadio="displayRadio"></newResult>
+        <newResult :displayRadio="displayRadio"></newResult>
 
         <el-dialog v-model="msgVisible" width="30%" draggable style="border-radius: 1ch; background-color: #eafaff" center>
             <template #header>
@@ -56,23 +44,9 @@ import { reactive, ref, inject, onMounted, watch } from 'vue'
 import { ElMessage, genFileId, UploadProps } from 'element-plus'
 import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
-import Ipp from './Ipp.vue'
 import newResult from './newResult.vue' 
 import { usePPdata } from '/@/stores/PPdata'
 
-
-const options = [
-    {
-        value: 'Option1',
-        label: '旧页面',
-    },
-    {
-        value: 'Option2',
-        label: '新页面',
-    },
-]
-
-const devValue = ref('Option2')
 
 // const socket: Socket = inject("socket") as Socket;
 const Ippdata = usePPdata()

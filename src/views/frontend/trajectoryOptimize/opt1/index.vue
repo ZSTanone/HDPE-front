@@ -1,66 +1,5 @@
 <template>
     <div class="default-main">
-        <el-row style="margin-bottom: 20px" class="nav-bar">
-            <el-col :span="2.9" style="margin-right: 20px">
-                <el-tooltip content="选取聚乙烯装置" placement="top">
-                    <el-select v-model="devValue" style="width: 150px" placeholder="I套聚已烯装置">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                </el-tooltip>
-            </el-col>
-
-            <el-col :span="2.9" style="margin: 0px 20px">
-                <el-tooltip content="详细设置牌号切换参数" placement="top">
-                    <el-button type="primary" @click="dialogVisible = true"> 牌号切换设置 </el-button>
-                </el-tooltip>
-            </el-col>
-        </el-row>
-
-        <el-dialog v-model="dialogVisible" title="牌号切换设置" width="60%" draggable style="border-radius: 1ch">
-            <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
-                <template #header>
-                    <div class="card-header">{{ optValue }}</div>
-                </template>
-
-                <div class="box">
-                    <div class="left">
-                        <el-row class="btn-row" align="middle" style="margin-top: 100px">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt1">选择优化牌号</el-button>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="btn-row" align="middle">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt2">切换变量约束</el-button>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="btn-row" align="middle">
-                            <el-col>
-                                <el-button :type="'primary'" plain @click="showOpt3">切换优化运行</el-button>
-                            </el-col>
-                        </el-row>
-                    </div>
-
-                    <div class="right">
-                        <GradeTrans
-                            v-model:targetGrade="targetGrade"
-                            :gradeNow="gradeNow"
-                            :grade-now-table="gradeNowTable"
-                            :target-grade-table="targetGradeTable"
-                            @update:targetGrade="handleTargetGradeUpdate"
-                            v-if="optValue === '牌号选择'"
-                        ></GradeTrans>
-                        <paraConstrain v-if="optValue === '变量约束'" v-model:inputSelect="inputSelect" :table-data="InputTableData"></paraConstrain>
-                        <optProsess v-if="optValue === '优化过程'"></optProsess>
-                    </div>
-                </div>
-            </el-card>
-            <el-button type="success" plain style="margin-left: 86%; margin-top: 1%" @click="onFinish">完成配置</el-button>
-        </el-dialog>
-
-        <newPage v-if="devValue === 'Option2'"></newPage>
         <newPage3 v-if="devValue === 'Option3'"></newPage3>
     </div>
 </template>
@@ -71,11 +10,8 @@ import { ElMessage, genFileId, UploadProps } from 'element-plus'
 import type { UploadInstance, UploadRawFile } from 'element-plus'
 import { uploadTargetMW } from '/@/api/frontend/user'
 import { usePPdata } from '/@/stores/PPdata'
-import newPage from './newPage.vue'
 import newPage3 from './newPage3.vue'
-import GradeTrans from './gradeTrans.vue'
-import paraConstrain from './paraConstrain.vue'
-import optProsess from './optProcess.vue'
+
 
 // const socket: Socket = inject("socket") as Socket;
 const Ippdata = usePPdata()

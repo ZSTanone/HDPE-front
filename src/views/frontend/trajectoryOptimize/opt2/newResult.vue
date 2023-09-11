@@ -25,11 +25,7 @@
         </el-row>
 
         <el-row v-show="displayRadio==='优化结果分析'" :gutter="20" justify="center">
-            <history v-show="displayRadio==='优化结果分析'"></history>
-        </el-row>
-
-        <el-row v-show="displayRadio==='820组会页面'" :gutter="20" justify="center">
-            <detail v-show="displayRadio==='820组会页面'"></detail>
+            <detail v-show="displayRadio==='优化结果分析'"></detail>
         </el-row>
 
 
@@ -41,7 +37,6 @@ import { CSSProperties, nextTick, onActivated, onMounted, onUnmounted, onUpdated
 import * as echarts from 'echarts'
 import { useTemplateRefsList } from '@vueuse/core';
 import { usePPdata} from '/@/stores/PPdata'
-import history from './history.vue';
 import detail from './detail.vue';
 
 const props = defineProps<{
