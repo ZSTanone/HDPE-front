@@ -1,7 +1,7 @@
 <template>
     <div class="layout-logo">
         <img v-if="!config.layout.menuCollapse" class="logo-img" src="~assets/logo.png" alt="logo" />
-        <div v-if="!config.layout.menuCollapse" :style="{ color: config.getColorVal('menuActiveColor') }" class="website-name">
+        <div v-if="!config.layout.menuCollapse" :style="{ color:'black' }" class="website-name">
             {{ siteConfig.site_name }}
         </div>
         <Icon
@@ -9,7 +9,7 @@
             @click="onMenuCollapse"
             :name="config.layout.menuCollapse ? 'fa fa-indent' : 'fa fa-dedent'"
             :class="config.layout.menuCollapse ? 'unfold' : ''"
-            :color="config.getColorVal('menuActiveColor')"
+            :color="'black'"
             size="18"
             class="fold"
         />
@@ -55,11 +55,11 @@ const onMenuCollapse = function () {
     // background-color: rgb(239, 77, 218);
 }
 .logo-img {
-    width: 28px;
+    width: 40px;
 }
 .website-name {
     padding-left: 4px;
-    font-size: var(--el-font-size-extra-large);
+    font-size: var(--el-font-size-large);
     font-weight: 600;
 }
 .fold {

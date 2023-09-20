@@ -18,13 +18,13 @@
 
             <!-- <el-button class="date">{{ time }}</el-button> -->
 
-            <el-card class="date" shadow="never">
+            <!-- <el-card class="date" shadow="never">
                 <h1 style="color: rgb(185, 71, 0); margin-bottom: 5px;">当前时刻</h1>
                 <h1>{{time}}</h1>
-            </el-card>
+            </el-card> -->
 
             <el-row class="timeSetter">
-                <el-col :span="2.9" style="margin-right: 10px">
+                <!-- <el-col :span="2.9" style="margin-right: 10px">
                     <el-tag class="ml-2" size="large" effect="dark">设置查询频率</el-tag>
                 </el-col>
                 <el-col :span="2.9" style="margin-right: 10px">
@@ -37,11 +37,11 @@
                             </template>
                         </el-input>
                     </el-tooltip>
-                </el-col>
+                </el-col> -->
 
-                <el-col :span="2.9">
+                <!-- <el-col :span="2.9">
                     <el-button @click="getData">点击更新数据（测试）</el-button>
-                </el-col>
+                </el-col> -->
             </el-row>
 
             <div class="table">

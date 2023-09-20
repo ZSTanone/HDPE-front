@@ -109,8 +109,8 @@ index()
     align-items: center;
     cursor: pointer;
     img {
-        height: 34px;
-        width: 34px;
+        height: 45px;
+        width: 45px;
     }
     span {
         padding-left: 4px;

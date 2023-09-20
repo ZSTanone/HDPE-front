@@ -56,8 +56,10 @@ const onMenuCollapse = function () {
 }
 .website-name {
     padding-left: 4px;
-    font-size: var(--el-font-size-extra-large);
+    // font-size: var(--el-font-size-default);
+    font-size: 2vw;
     font-weight: 600;
+    color: black;
 }
 .fold {
     margin-left: auto;
