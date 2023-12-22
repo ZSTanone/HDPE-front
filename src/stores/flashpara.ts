@@ -25,14 +25,14 @@ export const useFlashdata = defineStore('Flash', {
             h2c2: 0.082,
 
             // 其余的
-            PI43155:0.5,
-            TI43161A:0.5,
-            LZI43166A:0.5,
-            TI43156:0.5,
-            LZI43166B:0.5,
-            TI43152:0.5,
-            PI43153:0.5,
-            AI43157:0.5,
+            PI43155:0.953,
+            TI43161A:81.9, //degC
+            LZI43166A:50.3, // %
+            TI43156:81.7, // degC
+            LZI43166B:29.8, //% 
+            TI43152:80.4,  //degC
+            PI43153:0.893, //MPa
+            AI43157:86.2, //ppmv
         }
     },
     getters: {},

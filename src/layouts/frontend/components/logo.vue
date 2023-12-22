@@ -2,12 +2,12 @@
     <div class="layout-logo">
         <img v-if="!config.layout.menuCollapse" class="logo-img" src="~assets/logo.png" alt="logo" />
         <div v-if="!config.layout.menuCollapse" :style="{ color:'black' }" class="website-name">
-            {{ siteConfig.site_name }}
+            {{ siteConfig.short_name }}
         </div>
         <Icon
             v-if="config.layout.layoutMode != 'Streamline'"
             @click="onMenuCollapse"
-            :name="config.layout.menuCollapse ? 'fa fa-indent' : 'fa fa-dedent'"
+            :name="config.layout.menuCollapse ? 'iconfont icon-xiangyou1' : 'iconfont icon-xiangzuo'"
             :class="config.layout.menuCollapse ? 'unfold' : ''"
             :color="'black'"
             size="18"

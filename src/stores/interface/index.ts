@@ -101,6 +101,7 @@ export interface Terminal {
 // 网页设置的接口 用于状态仓库
 export interface SiteConfig {
     site_name: string
+    short_name: string
     record_number?: string
     version: string
     cdn_url: string

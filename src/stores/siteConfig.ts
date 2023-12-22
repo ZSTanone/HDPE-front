@@ -12,6 +12,7 @@ export const useSiteConfig = defineStore('siteConfig', {
     state: (): SiteConfig => {
         return {
             site_name: '',
+            short_name: '',
             record_number: '',
             version: '',
             cdn_url: '',

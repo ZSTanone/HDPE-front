@@ -7,7 +7,8 @@
                     <el-col :span="16" :xs="24">
                         <div v-if="memberCenter.state.open" class="login-box">
                             <div class="login-title">
-                                {{ t('user.user.' + state.form.tab) + t('user.user.reach') + siteConfig.site_name }}
+                                <!-- {{ t('user.user.' + state.form.tab) + t('user.user.reach') + siteConfig.site_name}} -->
+                                {{ '登录系统' }}
                             </div>
                             <el-form ref="formRef" @keyup.enter="onSubmit(formRef)" :rules="rules" :model="state.form">
                                 <!-- 注册验证方式 -->
@@ -519,11 +520,18 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+
+.frontend-footer-brother {
+    background: url(/@/assets/factory.jpg);
+    background-size: cover;
+}
+
 .login-box {
     width: 460px;
     margin: 40px auto;
     padding: 10px 60px 70px 60px;
     background-color: var(--ba-bg-color-overlay);
+    opacity: 0.8;
 }
 .login-title {
     text-align: center;

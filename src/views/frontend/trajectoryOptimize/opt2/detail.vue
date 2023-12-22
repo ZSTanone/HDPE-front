@@ -351,7 +351,7 @@ onMounted(() => {
             })
         }
 
-        initChartT(6)
+        // initChartT(6)
 
         window.addEventListener('resize', echartsResize)
     })

@@ -218,7 +218,8 @@ const onSubmit = (formEl: InstanceType<typeof ElForm> | undefined) => {
 }
 .bubble {
     overflow: hidden;
-    background: url(/@/assets/bg.jpg) repeat;
+    background: url(/@/assets/factory.jpg);
+    background-size: cover;
 }
 .form-item-icon {
     height: auto;

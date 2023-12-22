@@ -115,6 +115,7 @@ import { useTemplateRefsList } from '@vueuse/core'
 
 import { useSimPara } from '/@/stores/SimPara'
 import { storeToRefs } from 'pinia'
+import { reduce } from 'lodash'
 
 const SimPara = useSimPara()
 const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048 } = storeToRefs(SimPara)
@@ -132,19 +133,19 @@ const R4101Res = reactive([
     {
         axis: 'T1_1',
         description: '重均分子量',
-        value: String(0),
+        value: 15.83,
         unit: 'kg/mol',
     },
     {
         axis: 'T1_2',
         description: '多分散性指数',
-        value: String(0),
+        value: 2.16,
         unit: '',
     },
     {
         axis: 'T1_3',
         description: '熔融指数',
-        value: String(0),
+        value: 13.26,
         unit: 'g/10min',
     },
 ])
@@ -293,7 +294,31 @@ const headerStyle2 = (): CSSProperties => {
     }
 }
 
-const initChart = (chartLable: number) => {
+//图表绘制2023.12.22
+// 计算MWD曲线上的点
+const mwd1:any = [];
+const rn1 = 640   //平均链长
+const k1 = 1/rn1;  //系数τ
+const MW = 54.2  // 聚合物平均摩尔质量
+for (let r = 1; r <= rn1 * 11; r=r+50) {
+    const logR = Math.log10(r * MW);
+    const y = 2.3026 * Math.pow(r, 2) * Math.pow(k1, 2) * Math.exp(-r * k1);
+    mwd1.push([logR, y]);
+}
+
+// 计算短支链分布
+const scb1:any = []
+const F1 = 0.1  
+
+const nc = 8 //共聚单体 1-辛烯的碳原子数为8
+
+for (let r = 1; r <= rn1 * 8; r=r+50) {
+    const logR = Math.log10(r * MW);
+    const y = 1000*F1 / (2+(nc-2)*F1);
+    scb1.push([logR, y]);
+}
+
+const initMWDChart = (chartLable: number) => {
     const FulldataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
     let option = {
         title: {
@@ -307,26 +332,145 @@ const initChart = (chartLable: number) => {
             },
         },
 
+        legend: {
+            align: 'left',
+            orient: 'horizontal',
+            top: 30,
+            textStyle: {
+                fontSize: 12, //字体大小
+                fontWeight: 500,
+            },
+        },
         xAxis: {
-            type: 'category',
-            name: '时间',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            type: 'value',
+            name: 'logMw',
+            min: 1.0, // 起始
+            max: 7.0,
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [10, 0, 0, 0]
+            },
+            nameRotate: '0',
+            nameLocation: 'center',
+            splitLine: {
+                show: false
+            }
         },
         yAxis: {
             type: 'value',
-            name: '单位',
+            name: 'dw',
+            boundaryGap: ['0%', '20%'],
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [0, 0, 15, 0]
+            },
+            nameRotate: '90',
+            nameLocation: 'center',
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#C6C6C6FF', // 修改网格线颜色
+                    type: 'dashed', //网格线的类型
+                    width: 1,
+                }
+            },
         },
-        // series数组中有几个对象就有几条曲线
         series: [
             {
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                data: mwd1,
+                symbol: 'emptyCircle',
+                symbolSize: 4,
                 type: 'line',
                 smooth: true,
+                lineStyle: {
+                    color: 'red'  
+                },
+                itemStyle: {
+                    color: 'red'  // 修改点的颜色为红色
+                }
             },
+        ],
+    }
+    FulldataChart.setOption(option)
+    state.charts.push(FulldataChart)
+}
+
+// 画SCBD
+const initSCBChart = (chartLable: number) => {
+    const FulldataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
+    let option = {
+        title: {
+            left: 'center',
+            text: FigName[chartLable],
+        },
+        tooltip: {
+            trigger: 'axis',
+            textStyle: {
+                align: 'left',
+            },
+        },
+
+        legend: {
+            align: 'left',
+            orient: 'horizontal',
+            top: 30,
+            textStyle: {
+                fontSize: 12, //字体大小
+                fontWeight: 500,
+            },
+        },
+        xAxis: {
+            type: 'value',
+            name: 'logMw',
+            min: 1.0, // 起始
+            max: 7.0,
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [10, 0, 0, 0]
+            },
+            nameRotate: '0',
+            nameLocation: 'center',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: 'SCB',
+            max:80,
+            boundaryGap: ['0%', '20%'],
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [0, 0, 15, 0]
+            },
+            nameRotate: '90',
+            nameLocation: 'center',
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#C6C6C6FF', // 修改网格线颜色
+                    type: 'dashed', //网格线的类型
+                    width: 1,
+                }
+            },
+        },
+        series: [
             {
-                data: [620, 832, 855, 900, 1222, 1350, 920],
+                data: scb1,
+                symbol: 'emptyCircle',
+                symbolSize: 4,
                 type: 'line',
                 smooth: true,
+                lineStyle: {
+                    color: 'green'  //连接线颜色
+                },
+                itemStyle: {
+                    color: 'green'  // 修改点的颜色为红色
+                }
             },
         ],
     }
@@ -348,9 +492,10 @@ onActivated(() => {
 
 onMounted(() => {
     nextTick(() => {
-        for (let i = 0; i < chartRefs.value.length; i++) {
-            initChart(i)
-        }
+
+        initMWDChart(0)
+        initSCBChart(1)
+
         window.addEventListener('resize', echartsResize)
     })
 })

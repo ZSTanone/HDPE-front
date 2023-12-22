@@ -5,21 +5,35 @@
             <el-main class="main">
                 <div class="main-container">
                     <div class="main-left">
+                        <!-- 软件标题 -->
                         <div class="main-title">{{ siteConfig.site_name }}</div>
-                        <div class="main-content">
+
+                        <!-- 宣传语 -->
+                        <!-- <div class="main-content">
                             {{ $t('index.Steve Jobs') }}
+                        </div> -->
+
+                        <div class="main-content">
+
                         </div>
+                        <!-- 两个按钮 -->
+
                         <el-button v-if="memberCenter.state.open" @click="$router.push('/user')" color="#ffffff" size="large">{{
-                            $t('index.Member Center')
+                            // $t('index.Member Center')
+                            '用户登录'
                         }}</el-button>
-                        
-                        <el-button v-if="memberCenter.state.open" @click="$router.push('/admin')" color="#ffffff" size="large">{{
+
+                        <!-- <el-button v-if="memberCenter.state.open" @click="$router.push('/admin')" color="#ffffff" size="large">{{
                             $t('index.Background Management')
-                        }}</el-button>
+                        }}</el-button> -->
                     </div>
-                    <div class="main-right">
+
+                    <!-- 旁边的小图 -->
+
+                    <!-- <div class="main-right">
                         <img :src="indexCover" alt="" />
-                    </div>
+                    </div> -->
+
                 </div>
             </el-main>
         </el-container>
@@ -45,7 +59,8 @@ togglePageDark(false)
 .container {
     width: 100vw;
     height: 100vh;
-    background: url(/@/assets/bg.jpg) repeat;
+    background: url(/@/assets/factory.jpg);
+    background-size: cover;
     color: var(--el-color-white);
     .main {
         height: calc(100vh - 120px);

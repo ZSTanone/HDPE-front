@@ -69,7 +69,7 @@
             </div>
         </el-popover>
         <div @click="configStore.setLayout('showDrawer', true)" class="nav-menu-item">
-            <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="fa fa-cogs" size="18" />
+            <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="iconfont icon-shezhi" size="18" />
         </div>
         <Config />
         <TerminalVue />

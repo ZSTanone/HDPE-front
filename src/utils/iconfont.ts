@@ -3,7 +3,7 @@ import { loadCss, loadJs } from './common'
 import * as elIcons from '@element-plus/icons-vue'
 
 const cssUrls: Array<string> = [
-    '//at.alicdn.com/t/c/font_4079350_64bejfm2gje.css', // 0522 自建-替换内容
+    '////at.alicdn.com/t/c/font_4079350_a2x6vuswhi.css', // 0522 自建-替换内容
     '//cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
 ]
 const jsUrls: Array<string> = []

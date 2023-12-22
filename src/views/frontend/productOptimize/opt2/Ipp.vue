@@ -51,11 +51,11 @@
                     :data="ProductionTable" :row-style="{ height: '30px' }" :cell-style="setCellColor"
                     :style="largeTable" :header-cell-style="headerStyle2" :border="false">
                     <el-table-column prop="description" label="分子量数据" align="center" />
-                    <el-table-column prop="聚合物产量" label="聚合物产量" align="center" />
-                    <el-table-column prop="共聚单体含量" label="共聚单体含量" align="center" />
+                    <el-table-column prop="聚合物产量" label="聚合物产量  kg/h" align="center" />
+                    <el-table-column prop="共聚单体含量" label="共聚单体含量  kg/h" align="center" />
                     <el-table-column prop="平均短支链" label="平均短支链" align="center" />
-                    <el-table-column prop="熔融指数" label="熔融指数" align="center" />
-                    <el-table-column prop="产品密度" label="产品密度" align="center" />
+                    <el-table-column prop="熔融指数" label="熔融指数  g/10min" align="center" />
+                    <el-table-column prop="产品密度" label="产品密度  kg/m3" align="center" />
                 </el-table>
             </el-col>
         </el-row>
@@ -87,7 +87,173 @@ let CopoMWDChart_data: any[] = [[0], [0], [0]]
 let CCDChart_data: any[] = [[0], [0], [0]]
 let ChartTitle = ['R4101分子量分布对比图', 'R4201分子量分布对比图', 'R4101短支链分布对比图', 'R4201短支链分布对比图']
 
-const initMWdataChart = (chartLable: number) => {
+// const initMWdataChart = (chartLable: number) => {
+//     const MWdataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
+//     let option = {
+//         title: {
+//             text: ChartTitle[chartLable],
+//             left: 'center',
+//         },
+//         tooltip: {
+//             trigger: 'axis',
+//             axisPointer: {
+//                 type: 'cross'
+//             }
+//         },
+//         legend: {
+//             align: 'left',
+//             orient: 'horizontal',
+//             top: 30,
+//             textStyle:{
+//                 fontSize: 16,//字体大小
+//                 fontWeight: 700,
+//             },
+//             data: ['target', 'real', 'opt'],
+//         },
+//         xAxis: {
+//             type: 'value',
+//             name: 'logMw',
+//             min: 1.0, // 起始
+//             max:5.0,
+//             nameTextStyle: {
+//                 fontSize: 18,
+//                 fontWeight: 'bold',
+//                 padding: [10, 0, 0, 0]
+//             },
+//             nameRotate: '0',
+//             nameLocation: 'center',
+//             splitLine: {
+//                 show: false
+//             }
+//         },
+//         yAxis: {
+//             type: 'value',
+//             name: 'dw',
+//             boundaryGap: ['0%', '20%'],
+//             nameTextStyle: {
+//                 fontSize: 18,
+//                 fontWeight: 'bold',
+//                 padding: [0, 0, 15, 0]
+//             },
+//             nameRotate: '90',
+//             nameLocation: 'center',
+//             splitLine: {
+//                 show: true,
+//                 lineStyle: {
+//                     color: '#C6C6C6FF', // 修改网格线颜色
+//                     type: 'dashed', //网格线的类型
+//                     width: 1,
+//                 }
+//             },
+//         },
+//         series: [
+//             {
+//                 name: 'target',
+//                 data: R202MWDChart_data[0],
+//                 symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+//                 symbolSize: 4,    //小圆点的大小
+//                 type: 'line',
+//                 smooth: true
+//             },
+//             {
+//                 name: 'real',
+//                 data: R202MWDChart_data[1],
+//                 symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+//                 symbolSize: 4,    //小圆点的大小
+//                 type: 'line',
+//                 smooth: true
+//             },
+//             {
+//                 name: 'opt',
+//                 data: R202MWDChart_data[2],
+//                 symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+//                 symbolSize: 4,    //小圆点的大小
+//                 type: 'line',
+//                 smooth: true
+//             },
+//         ]
+//     }
+//     MWdataChart.setOption(option)
+//     state.charts.push(MWdataChart)
+// }
+
+// 计算曲线上的点
+const r1_mwd1:any = [];
+const rn1 = 640   //平均链长
+const k1 = 1/rn1;  //系数τ
+const MW = 54.2  // 聚合物平均摩尔质量
+for (let r = 1; r <= rn1 * 12; r=r+50) {
+    const logR = Math.log10(r * MW);
+    const y = 2.3026 * Math.pow(r, 2) * Math.pow(k1, 2) * Math.exp(-r * k1);
+    r1_mwd1.push([logR, y]);
+}
+
+const r1_mwd2:any = [];
+const rn2 = 680   //平均链长
+const k2 = 1/rn2;  //系数τ
+const MW2 = 62.3  // 聚合物平均摩尔质量
+for (let r = 1; r <= rn2 * 12; r=r+50) {
+    const logR = Math.log10(r * MW2);
+    const y = 2.3026 * Math.pow(r, 2) * Math.pow(k2, 2) * Math.exp(-r * k2);
+    r1_mwd2.push([logR, y]);
+}
+
+const r1_scb1:any = []
+const F1 = 0.1  
+const nc = 8 //共聚单体 1-辛烯的碳原子数为8
+for (let r = 1; r <= rn1 * 9; r=r+50) {
+    const logR = Math.log10(r * MW);
+    const y = 1000*F1 / (2+(nc-2)*F1);
+    r1_scb1.push([logR, y]);
+}
+
+const r1_scb2:any = []
+const F2 = 0.086  
+for (let r = 1; r <= rn1 * 9; r=r+50) {
+    const logR = Math.log10(r * MW2);
+    const y = 1000*F2 / (2+(nc-2)*F2);
+    r1_scb2.push([logR, y]);
+}
+
+
+// 计算曲线上的点
+const r2_mwd1:any = [];
+const rn3 = 663   //平均链长
+const k3 = 1/rn3;  //系数τ
+const MW3 = 59.3  // 聚合物平均摩尔质量
+for (let r = 1; r <= rn3 * 12; r=r+50) {
+    const logR = Math.log10(r * MW3);
+    const y = 2.3026 * Math.pow(r, 2) * Math.pow(k3, 2) * Math.exp(-r * k3);
+    r2_mwd1.push([logR, y]);
+}
+
+const r2_mwd2:any = [];
+const rn4 = 703   //平均链长
+const k4 = 1/rn2;  //系数τ
+const MW4 = 61.6  // 聚合物平均摩尔质量
+for (let r = 1; r <= rn4 * 12; r=r+50) {
+    const logR = Math.log10(r * MW4);
+    const y = 2.3026 * Math.pow(r, 2) * Math.pow(k4, 2) * Math.exp(-r * k4);
+    r2_mwd2.push([logR, y]);
+}
+
+const r2_scb1:any = []
+const F3 = 0.093  
+for (let r = 1; r <= rn3 * 9; r=r+50) {
+    const logR = Math.log10(r * MW3);
+    const y = 1000*F3 / (2+(nc-2)*F3);
+    r2_scb1.push([logR, y]);
+}
+
+const r2_scb2:any = []
+const F4 = 0.075  
+for (let r = 1; r <= rn1 * 9; r=r+50) {
+    const logR = Math.log10(r * MW4);
+    const y = 1000*F4 / (2+(nc-2)*F4);
+    r2_scb2.push([logR, y]);
+}
+
+const initMWdataChart = (chartLable: number,data1:Array<any>,data2:Array<any>) => {
     const MWdataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
     let option = {
         title: {
@@ -108,12 +274,13 @@ const initMWdataChart = (chartLable: number) => {
                 fontSize: 16,//字体大小
                 fontWeight: 700,
             },
-            data: ['target', 'real', 'opt'],
+            data: ['old', 'new'],
         },
         xAxis: {
             type: 'value',
             name: 'logMw',
-            min: 0.65, // 起始
+            min: 1.0, // 起始
+            max:7.0,
             nameTextStyle: {
                 fontSize: 18,
                 fontWeight: 'bold',
@@ -147,83 +314,181 @@ const initMWdataChart = (chartLable: number) => {
         },
         series: [
             {
-                name: 'target',
-                data: R202MWDChart_data[0],
-                symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+                name: 'old',
+                data: data1,
+                symbol: 'emptycircle',   //将小圆点改成实心 不写symbol默认空心
                 symbolSize: 4,    //小圆点的大小
                 type: 'line',
                 smooth: true
             },
             {
-                name: 'real',
-                data: R202MWDChart_data[1],
-                symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+                name: 'new',
+                data: data2,
+                symbol: 'emptycircle',   //将小圆点改成实心 不写symbol默认空心
                 symbolSize: 4,    //小圆点的大小
                 type: 'line',
                 smooth: true
-            },
-            {
-                name: 'opt',
-                data: R202MWDChart_data[2],
-                symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
-                symbolSize: 4,    //小圆点的大小
-                type: 'line',
-                smooth: true
-            },
+            }
+            // {
+            //     name: 'real',
+            //     data: R202MWDChart_data[1],
+            //     symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+            //     symbolSize: 4,    //小圆点的大小
+            //     type: 'line',
+            //     smooth: true
+            // },
+            // {
+            //     name: 'opt',
+            //     data: R202MWDChart_data[2],
+            //     symbol: 'circle',   //将小圆点改成实心 不写symbol默认空心
+            //     symbolSize: 4,    //小圆点的大小
+            //     type: 'line',
+            //     smooth: true
+            // },
         ]
     }
     MWdataChart.setOption(option)
     state.charts.push(MWdataChart)
 }
 
+// 画SCBD
+const initSCBChart = (chartLable: number, data1:Array<any>,data2:Array<any>) => {
+    const FulldataChart = echarts.init(chartRefs.value[chartLable] as HTMLElement)
+    let option = {
+        title: {
+            left: 'center',
+            text: ChartTitle[chartLable],
+        },
+        tooltip: {
+            trigger: 'axis',
+            textStyle: {
+                align: 'left',
+            },
+        },
+
+        legend: {
+            align: 'left',
+            orient: 'horizontal',
+            top: 30,
+            textStyle: {
+                fontSize: 12, //字体大小
+                fontWeight: 500,
+            },
+            // 图例的名称
+            data: ['old', 'new'],
+        },
+        xAxis: {
+            type: 'value',
+            name: 'logMw',
+            min: 1.0, // 起始
+            max: 7.0,
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [10, 0, 0, 0]
+            },
+            nameRotate: '0',
+            nameLocation: 'center',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: 'SCB',
+            max:80,
+            boundaryGap: ['0%', '20%'],
+            nameTextStyle: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: [0, 0, 15, 0]
+            },
+            nameRotate: '90',
+            nameLocation: 'center',
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#C6C6C6FF', // 修改网格线颜色
+                    type: 'dashed', //网格线的类型
+                    width: 1,
+                }
+            },
+        },
+        series: [
+            {
+                name: 'old',
+                data: data1,
+                symbol: 'emptycircle',   //将小圆点改成实心 不写symbol默认空心
+                symbolSize: 4,    //小圆点的大小
+                type: 'line',
+                smooth: true
+            },
+            {
+                name: 'new',
+                data: data2,
+                symbol: 'emptycircle',   //将小圆点改成实心 不写symbol默认空心
+                symbolSize: 4,    //小圆点的大小
+                type: 'line',
+                smooth: true
+            },
+        ],
+    }
+    FulldataChart.setOption(option)
+    state.charts.push(FulldataChart)
+}
+
 const ProductionTable = reactive([
     {
-        description: '优化值(Kmol/h)',
-        '聚合物产量': String(0),
-        '共聚单体含量': String(0),
-        '共聚物产量': String(0),
-        '平均短支链': String(0),
-        '熔融指数': String(0),
-        '产品密度': String(0),
+        description: '优化值',
+        '聚合物产量': 42430,
+        '共聚单体含量': 35621,
+        '平均短支链': 20,
+        '熔融指数': 1.45,
+        '产品密度': 273.2,
     },
     {
-        description: '当前值(Kmol/h)',
-        '聚合物产量': String(0),
-        '共聚单体含量': String(0),
-        '共聚物产量': String(0),
-        '平均短支链': String(0),
-        '熔融指数': String(0),
-        '产品密度': String(0),
+        description: '当前值',
+        '聚合物产量': 41362,
+        '共聚单体含量': 34622,
+        '平均短支链': 23,
+        '熔融指数': 1.68,
+        '产品密度': 285.2,
+        // '聚合物产量': String(0),
+        // '共聚单体含量': String(0),
+        // '共聚物产量': String(0),
+        // '平均短支链': String(0),
+        // '熔融指数': String(0),
+        // '产品密度': String(0),
     },
     {
-        description: '设定值(Kmol/h)',
-        '聚合物产量': String(0),
-        '共聚单体含量': String(0),
-        '共聚物产量': String(0),
-        '平均短支链': String(0),
-        '熔融指数': String(0),
-        '产品密度': String(0),
+        description: '设定值',
+        '聚合物产量': 42560,
+        '共聚单体含量': 35800,
+        // '共聚物产量': String(0),
+        '平均短支链': 18,
+        '熔融指数': 1.365,
+        '产品密度': 263.7,
     },
 ])
 
 const ParamsTable = reactive([
     {
-        description: '优化值(Kmol/h)',
-        R4101_H2: String(0),
-        R4101_C2H4: String(0),
-        R4101_C6H12: String(0),
-        R4201_H2: String(0),
-        R4201_C2H4: String(0),
-        R4201_C6H12: String(0),
+        description: '优化值(kg/h)',
+        R4101_H2: 13.85,
+        R4101_C2H4: 27625,
+        R4101_C6H12: 365,
+        R4201_H2: 12.56,
+        R4201_C2H4: 26598,
+        R4201_C6H12: 348,
     },
     {
-        description: '当前值(Kmol/h)',
-        R4101_H2: String(0),
-        R4101_C2H4: String(0),
-        R4101_C6H12: String(0),
-        R4201_H2: String(0),
-        R4201_C2H4: String(0),
-        R4201_C6H12: String(0),
+        description: '当前值(kg/h)',
+        R4101_H2: 15.62,
+        R4101_C2H4: 25230,
+        R4101_C6H12: 328,
+        R4201_H2: 11.53,
+        R4201_C2H4: 28833,
+        R4201_C6H12: 366,
     },
 ])
 
@@ -400,10 +665,12 @@ const headerStyle2 = ( {column}:cellstyle ):CSSProperties => {
 }
 
 onMounted(() => {
-    initMWdataChart(0)
-    initMWdataChart(1)
-    initMWdataChart(2)
-    initMWdataChart(3)
+    initMWdataChart(0,r1_mwd1,r1_mwd2)
+    initMWdataChart(1,r2_mwd1,r2_mwd2)
+    initSCBChart(2,r1_scb1,r1_scb2)
+    initSCBChart(3,r2_scb1,r2_scb2)
+    // initMWdataChart(2)
+    // initMWdataChart(3)
 })
 
 const echartsResize = () => {

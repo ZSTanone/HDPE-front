@@ -1,6 +1,7 @@
 <template>
     <div class="outer">
         <div class="box1">
+            <el-button size="small" type="primary" class="tips">进料单位: kg/h</el-button>
             <el-button size="small" type="primary" class="FC41058 custom-button1">{{ FC41058 }}</el-button>
             <el-button size="small" type="primary" class="FC41053 custom-button1">{{ FC41053 }}</el-button>
             <el-button size="small" type="primary" class="FC41049 custom-button1">{{ FC41049 }}</el-button>
@@ -119,19 +120,19 @@ const R4101In = reactive([
     {
         axis: 'T1_1',
         description: '氢气乙烯比',
-        value: String(0),
+        value: String(0.000485),
         unit: '1',
     },
     {
         axis: 'T1_2',
         description: '共聚单体乙烯比',
-        value: String(0),
+        value: String(0.312),
         unit: '1',
     },
     {
         axis: 'T1_3',
         description: '催化剂进料量(kg/h)',
-        value: String(0),
+        value: String(125.5),
         unit: 'kg/h',
     },
     {
@@ -146,13 +147,13 @@ const R4201In = reactive([
     {
         axis: 'T2_1',
         description: '氢气乙烯比',
-        value: String(0),
+        value: String(0.000693),
         unit: '1',
     },
     {
         axis: 'T2_2',
         description: '共聚单体乙烯比',
-        value: String(0),
+        value: String(0.203),
         unit: '1',
     },
     {
@@ -173,32 +174,32 @@ const Mirco1 = reactive([
     {
         axis: 'T3_1',
         description: '重均分子量',
-        value: String(0),
+        value: String(35.64),
         unit: '1',
     },
     {
         axis: 'T3_2',
         description: '多分散性指数',
-        value: String(0),
+        value: String(2.103),
         unit: '1',
     },
     {
         axis: 'T3_3',
         description: '熔融指数',
-        value: String(0),
+        value: String(16.52),
         unit: '1',
     },
     {
         axis: 'T3_3',
         description: '密度',
-        value: String(0),
+        value: String(565.0),
         unit: '1',
     },
 ])
 
 const HDPEdata = useHDPEdata()
 // 位点数据后端保留三位小数处理
-const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yield, time} = storeToRefs(HDPEdata)
+const { FC41058, FC41053, FC41049, FC30253, FC30493, FC41048, FC42058, FC42053, FC42049, FC30486, FC42048, Yield} = storeToRefs(HDPEdata)
 // const dialogVisible = ref(false)
 // const chartRefs = useTemplateRefsList<HTMLDivElement>()
 const freqValue = ref('Option2')
@@ -377,10 +378,10 @@ export default defineComponent({
     .yeild {
         position: absolute;
         top: 5.9 * 5vw;
-        left: 13.1 * 5vw;
+        left: 12.9 * 5vw;
 
         background-color: transparent;
-        color: rgb(42, 103, 209);
+        color: rgb(21, 52, 105);
         font-weight: bold;
         border: none;
         font-size: 0.8vw;
@@ -414,6 +415,17 @@ export default defineComponent({
 
         // display: flex;  // 这里需要flex
 
+        .tips {
+            position: absolute;
+            top: 4.5 * 5vw;
+            left: 1.0 * 5vw;
+
+            background-color: transparent;
+            color: #5c3d03;
+            font-weight: bold;
+            border: none;
+            font-size: small;
+        }
         .FC41058 {
             position: absolute;
             top: 4.82 * 5vw;

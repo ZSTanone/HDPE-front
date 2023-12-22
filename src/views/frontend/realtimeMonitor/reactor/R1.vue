@@ -1,14 +1,14 @@
 <template>
     <div class="outer">
         <div class="box1">
-            <el-button type="primary" size="large"  class="T21">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T23">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T24">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T25">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T26">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T27">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T29">{{ 0 }} degC</el-button>
-            <el-button type="primary" size="large"  class="T30">{{ 0 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T21">{{ 65.5 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T23">{{ 70.1 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T24">{{ 69.4 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T25">{{ 69.4 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T26">{{ 65.6 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T27">{{ 64.1 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T29">{{ 70.4 }} degC</el-button>
+            <el-button type="primary" size="large"  class="T30">{{ 65.3 }} degC</el-button>
         </div>
 
     </div>
