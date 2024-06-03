@@ -331,3 +331,41 @@ export interface PPdata {
     FIC231: number
     FIC202: number
 }
+
+
+//矩方法模型的参数 半间歇
+export interface MethodofMoments {
+    // 数据标识
+    submit:boolean
+    //进料
+    C:number
+    S0:number
+    M:number
+    H2:number
+    B:number
+    //动力学参数
+    kiA1:number
+    kiB1:number
+    kpA1:number
+    kpB1:number
+    ktb1:number
+    kth1:number
+    kd1:number
+    kCSA1:number
+    kCSA01:number
+
+    kiA2:number
+    kiB2:number
+    kpA2:number
+    kpB2:number
+    ktb2:number
+    kth2:number
+    kd2:number
+    kCSA2:number
+    kCSA02:number
+
+    //平均停留时间
+    // st:number
+
+
+}

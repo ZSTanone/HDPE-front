@@ -28,8 +28,6 @@
 
 <script setup lang="ts">
 import { onMounted, Ref, ref, watch } from 'vue'
-import IIPPformVue from './IIPPform.vue';
-import InputForm from './InputForm.vue';
 import NewSim from './newSimFig.vue'
 import tableIn from './table.vue'
 

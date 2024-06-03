@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
-        "suppressImplicitAnyIndexErrors":true,
+        // "suppressImplicitAnyIndexErrors":true,
+        "noImplicitAny": false,
+        "suppressExcessPropertyErrors": false,
         "target": "esnext",
         "useDefineForClassFields": true,
         "module": "esnext",

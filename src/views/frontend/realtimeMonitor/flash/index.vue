@@ -10,10 +10,10 @@
             <el-button type="primary" size="large" class="PI-53">{{ PI43153 }} MPa</el-button>
             <el-button type="primary" size="large" class="AI-57">{{ AI43157 }} ppmv</el-button>
 
-            <el-card class="date" shadow="never">
+            <!-- <el-card class="date" shadow="never">
                 <h1 style="color: rgb(185, 71, 0); margin-bottom: 5px">当前时刻</h1>
                 <h1>0-0-0</h1>
-            </el-card>
+            </el-card> -->
 
             <el-card class="data-box" shadow="never">
                 <el-row :gutter="20" align="middle">
